@@ -1,4 +1,5 @@
 var table;
+var table_view;
 var table_trans;
 var save_method;
 
@@ -8,6 +9,21 @@ var save_method;
 
 $(document).ready(function () {
 	form_validation();
+
+	table_view = $("#table-view").DataTable({
+		processing: true,
+		serverSide: true,
+		responsive: true,
+		lengthChange: false,
+		autoWidth: false,
+		bPaginate: false,
+		bInfo: false,
+		// "order": [],
+		ajax: {
+			url: base_url + "/transactions/trans_details_list/"+$('#trans_number').val(),
+			type: "POST",
+		},
+	});
 
 	table = $("#table").DataTable({
 		processing: true,

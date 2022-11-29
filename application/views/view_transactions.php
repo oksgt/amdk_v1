@@ -42,6 +42,7 @@
                                     <th>Phone</th>
                                     <th>Total</th>
                                     <th>Notes</th>
+                                    <th>#</th>
                                 </tr>
                             </thead>
                             <tbody>
