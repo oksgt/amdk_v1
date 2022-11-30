@@ -35,8 +35,9 @@
         <div class="container-login100">
             <div class="wrap-login100 p-b-160 p-t-50">
                 <form id="login-form" class="login100-form validate-form" action="<?= base_url('login/action')?>" method="post">
+
                     <span class="login100-form-title p-b-43">
-                        Account Login
+                    <img src="<?php echo base_url() ?>assets/theme/img/logopdam_bg.png" alt="AMDK" width="220" height="150">
                     </span>
 
                     <?= $this->session->flashdata('message'); ?>

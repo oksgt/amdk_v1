@@ -5,9 +5,9 @@ class User extends CI_Model
 {
 
     var $table = 'users';
-    var $view = 'users';
-    var $column_order = array('id', 'identity', 'name', 'username', 'password');
-    var $column_search = array('id', 'identity', 'name', 'username', 'password');
+    var $view = 'view_user';
+    var $column_order = array('id', 'identity', 'name', 'username', 'password', 'role_name');
+    var $column_search = array('id', 'identity', 'name', 'username', 'password', 'role_name');
     var $order = array('id' => 'desc');
 
     public function __construct()
@@ -17,7 +17,7 @@ class User extends CI_Model
 
     public function cek_login($table, $where)
     {
-        return $this->db->get_where($table, $where);
+        return $this->db->get_where($this->view, $where);
     }
 
     public function query($sql)

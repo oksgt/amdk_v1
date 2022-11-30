@@ -61,8 +61,7 @@ class Login extends CI_Controller
                     } else {
                         $this->session->set_flashdata('message', '<span class="login100-form-title text-danger bg-light" style="margin-bottom: 10px;
                         border-radius: 12px; font-size: 20px">
-                            Password Salah X '.$this->hash_string($plain_password).'
-                        </span>');
+                            Password Salah</span>');
                         redirect("login", "refresh");
                     }
                 }
@@ -96,12 +95,12 @@ class Login extends CI_Controller
 
     // public function add_user()
     // {
-    //     $data = array(
-    //         'role_id'         => 1,
-    //         'name'            => 'Pak Rudy',
-    //         'username'        => 'admin',
-    //         'password'        => $this->hash_string('admin'),
-    //     );
+        // $data = array(
+        //     'role_id'         => 1,
+        //     'name'            => 'Pak Rudy',
+        //     'username'        => 'admin',
+        //     'password'        => $this->hash_string('admin'),
+        // );
     //     $insertedId = $this->model->save($data);
     //     echo $insertedId;
     // }

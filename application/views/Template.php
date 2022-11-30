@@ -44,7 +44,7 @@
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu" aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
                     <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand" href="./"><img src="<?php echo base_url() ?>assets/theme/img/logopdam_bg.png" alt="AMDK" width="150" height="100"></a>
+                <a class="navbar-brand" href="./"><img src="<?php echo base_url() ?>assets/theme/img/logopdam_bg.png" alt="AMDK" width="45" height="30"> PERUMDAM TS</a>
                 <!-- <a class="navbar-brand hidden" href="./"><img src="<?php echo base_url() ?>assets/theme/img/logopdam_bg.png" alt="AMDK" width="90" height="60"></a> -->
             </div>
 
@@ -71,7 +71,7 @@
 
                 <div class="col-sm-5">
                     <div class="user-area dropdown float-right">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a href="#" class="dropdown-toggle text-dark" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <!-- <img class="user-avatar rounded-circle" src="images/admin.jpg" alt="Nama"> -->
                             You're logged in as "<?= $this->session->userdata('name'); ?>"
                         </a>
