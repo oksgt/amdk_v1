@@ -15,6 +15,44 @@ class Users extends CI_Controller {
 		}
 	}
 
+    public function index(){
+        $this->template->load('template', 'view_user');   
+    }
+
+    public function list_user()
+	{
+		$list = $this->User->get_datatables();
+		$data = array();
+		$no = $_POST['start'];
+		foreach ($list as $r) {
+			$no++;
+			$row = array();
+			$row[] = $r->name;
+			$row[] = $r->username;
+			$row[] = $r->role_name;
+            $row[] = $r->status;
+			$row[] = '
+				<div class="btn-group-sm d-flex" role="group" aria-label="Action Button">
+					<a role="button" class="btn btn-warning btn-sm w-100 text-white" href="'.base_url('/products/edit/'.$r->id).'">
+						<b class="ti-pencil-alt"></b> Edit
+					</a>
+					<button type="button" class="btn bg-white default btn-sm border-0 text-danger w-100" onclick="delete_data('.$r->id.')">
+						<b class="ti-trash"></b>Delete
+					</button>
+				</div>
+			';
+			$data[] = $row;
+		}
+
+		$output = array(
+			"draw" => $_POST['draw'],
+			"recordsTotal" => $this->User->count_all(),
+			"recordsFiltered" => $this->User->count_filtered(),
+			"data" => $data,
+		);
+		echo json_encode($output);
+	}
+
 	public function changepassword()
 	{
         $this->template->load('template', 'view_change_password');

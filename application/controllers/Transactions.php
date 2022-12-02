@@ -183,26 +183,51 @@ class Transactions extends CI_Controller
 
     public function save_item()
     {
-
-        //get product price
-        $product = $this->Product->detail($this->input->post('product'))->row_array();
-
-        $object = [
+        //cek apakah sudah ada barang yang serupa didalam list detail
+        $existing = $this->Trans_detail->get_by([
             'trans_number'      => $this->input->post('trans_number'),
             'id_product'        => $this->input->post('product'),
-            'qty'               => $this->input->post('input_qty'),
-            'price'             => $product['price'],
-            'sub_total_price'   => $product['price'] * $this->input->post('input_qty'),
-            'notes'             => '-',
-            'trans_status'      => 1,
-        ];
+        ])->row_array();
 
-        $insert_trans_detail = $this->Trans_detail->save($object);
+        if ($existing) {
+            $object = [
+                'qty'               => $this->input->post('input_qty') + $existing['qty'],
+                'sub_total_price'   => $existing['price'] * ($this->input->post('input_qty') + $existing['qty']),
+            ];
 
-        if ($insert_trans_detail > 0) {
-            echo json_encode(['result' => true]);
+            $update_existing = $this->Trans_detail->update($object, [
+                'trans_number'      => $this->input->post('trans_number'),
+                'id_product'        => $this->input->post('product'),
+            ]);
+
+            if ($update_existing) {
+                echo json_encode(['result' => true]);
+            } else {
+                echo json_encode(['result' => false]);
+            }
         } else {
-            echo json_encode(['result' => false]);
+            //get product price
+            $product = $this->Product->detail($this->input->post('product'))->row_array();
+
+            $object = [
+                'trans_number'      => $this->input->post('trans_number'),
+                'id_product'        => $this->input->post('product'),
+                'qty'               => $this->input->post('input_qty'),
+                'price'             => $product['price'],
+                'sub_total_price'   => $product['price'] * $this->input->post('input_qty'),
+                'notes'             => '-',
+                'trans_status'      => 1,
+                'input_by'            => $this->session->userdata('id'),
+                'created_at'        => Date('Y-m-d H:i:s')
+            ];
+
+            $insert_trans_detail = $this->Trans_detail->save($object);
+
+            if ($insert_trans_detail > 0) {
+                echo json_encode(['result' => true]);
+            } else {
+                echo json_encode(['result' => false]);
+            }
         }
     }
 
@@ -250,13 +275,15 @@ class Transactions extends CI_Controller
 
     public function finish()
     {
-        $name = $this->input->post('input_name');
-        $address = $this->input->post('input_address');
-        $phone = $this->input->post('input_phone');
-        $notes = $this->input->post('notes');
+        $name         = $this->input->post('input_name');
+        $address      = $this->input->post('input_address');
+        $phone        = $this->input->post('input_phone');
+        $notes        = $this->input->post('notes');
         $trans_number = $this->input->post('trans_number');
 
         $trans_detail = $this->Trans_detail->detail_trans($trans_number)->result();
+
+        $this->db->trans_begin();
 
         foreach ($trans_detail as $key => $value) {
             $prod = $this->Product->detail($value->id_product)->row_array();
@@ -286,17 +313,14 @@ class Transactions extends CI_Controller
 
         $insert = $this->Transaction->save($object);
 
-        if ($insert > 0) {
-            $message = '
-			<div class="alert alert-success alert-dismissible fade show" role="alert">
-				<strong>Success!</strong> Transaction Success!.
-				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			';
-            $this->session->set_flashdata('item', $message);
-        } else {
+        $obj = [
+            'trans_status' => 3
+        ];
+
+        $update_trans_status = $this->Trans_detail->update($obj, ['trans_number', $trans_number]);
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
             $message = '
 			<div class="alert alert-danger alert-dismissible fade show" role="alert">
 				<strong>Danger!</strong> Transaction Failed!.
@@ -305,6 +329,17 @@ class Transactions extends CI_Controller
 				</button>
 			</div>
 			';
+            $this->session->set_flashdata('item', $message);
+        } else {
+            $this->db->trans_commit();
+            $message = '
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Success!</strong> Transaction Success!.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                ';
             $this->session->set_flashdata('item', $message);
         }
 

@@ -16,6 +16,10 @@
         <a href="<?= base_url('stocks') ?>"> <i class="menu-icon ti-check-box"></i>Stocks </a>
     </li>
 
+    <li>
+        <a href="<?= base_url('users') ?>"> <i class="menu-icon ti-user"></i>Users </a>
+    </li>
+
     <!-- <li>
         <a href="<?= base_url('users') ?>"> <i class="menu-icon ti-user"></i>Users </a>
     </li> -->

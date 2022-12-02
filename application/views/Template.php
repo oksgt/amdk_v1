@@ -6,8 +6,9 @@
 <html class="no-js" lang="en">
 <!--<![endif]-->
 <script>
-  var base_url = '<?php echo base_url() ?>';
+    var base_url = '<?php echo base_url() ?>';
 </script>
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -121,14 +122,16 @@
     $uriSegment = $this->uri->segment(1);
     if ($uriSegment == "products") { ?>
         <script src="<?= base_url('assets/js/') ?>product.js"></script>
-    <?php } else if ($uriSegment == "stocks") { ?> 
-        <script src="<?= base_url('assets/js/') ?>stocks.js"></script> 
-    <?php } else if ($uriSegment == "transactions") { ?> 
-        <script src="<?= base_url('assets/js/') ?>transactions.js"></script> 
-    <?php } else if ($uriSegment == "") { ?> 
-        <script src="<?= base_url('assets/js/') ?>app.js"></script> 
-    <?php } else { ?> 
-        <script src="<?= base_url('assets/js/') ?>app.js"></script> 
+    <?php } else if ($uriSegment == "stocks") { ?>
+        <script src="<?= base_url('assets/js/') ?>stocks.js"></script>
+    <?php } else if ($uriSegment == "transactions") { ?>
+        <script src="<?= base_url('assets/js/') ?>transactions.js"></script>
+    <?php } else if ($uriSegment == "users") { ?>
+        <script src="<?= base_url('assets/js/') ?>users.js"></script>
+    <?php } else if ($uriSegment == "") { ?>
+        <script src="<?= base_url('assets/js/') ?>app.js"></script>
+    <?php } else { ?>
+        <script src="<?= base_url('assets/js/') ?>app.js"></script>
     <?php } ?>
 
 </body>

@@ -31,8 +31,8 @@ class Login extends CI_Controller
         if (!$cek->result()) {
             $this->session->set_flashdata('message', '
             <span class="login100-form-title text-danger bg-light" style="margin-bottom: 10px;
-            border-radius: 12px; font-size: 20px">
-                Username Salah!
+            border-radius: 12px; font-size: 20px; padding: 10px 0px 10px 0px; font-weight:bold;">
+                Username not found!
             </span>
             ');
             redirect("login", "refresh");
@@ -60,15 +60,15 @@ class Login extends CI_Controller
                         }
                     } else {
                         $this->session->set_flashdata('message', '<span class="login100-form-title text-danger bg-light" style="margin-bottom: 10px;
-                        border-radius: 12px; font-size: 20px">
-                            Password Salah</span>');
+                        border-radius: 12px; font-size: 20px; padding: 10px 0px 10px 0px; font-weight:bold;">
+                            Wrong password!</span>');
                         redirect("login", "refresh");
                     }
                 }
             } else {
                 $this->session->set_flashdata('message', '<span class="login100-form-title text-danger bg-light" style="margin-bottom: 10px;
                 border-radius: 12px; font-size: 20px">
-                    Username / Password Salah
+                    Failed!
                 </span>');
                 redirect("login", "refresh");
             }

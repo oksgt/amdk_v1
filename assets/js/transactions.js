@@ -3,10 +3,6 @@ var table_view;
 var table_trans;
 var save_method;
 
-// (function ($) {
-	
-// })(jQuery);
-
 $(document).ready(function () {
 	form_validation();
 
