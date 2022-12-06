@@ -280,6 +280,21 @@ class Transactions extends CI_Controller
         $phone        = $this->input->post('input_phone');
         $notes        = $this->input->post('notes');
         $trans_number = $this->input->post('trans_number');
+        $deliv_date   = $this->input->post('input_delivery');
+        $payment_status = $this->input->post('input_payment_status');
+
+        if($payment_status == 0){
+            $message = '
+			<div class="alert alert-danger alert-dismissible fade show" role="alert">
+				<strong>Warning!</strong> Please select payment status!.
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			';
+            $this->session->set_flashdata('item', $message);
+            $this->checkout($trans_number );
+        }
 
         $trans_detail = $this->Trans_detail->detail_trans($trans_number)->result();
 
@@ -298,14 +313,19 @@ class Transactions extends CI_Controller
             );
         }
 
+        $arr_date   = explode("/", $deliv_date);
+        $deliv_date = $arr_date['2']."-".$arr_date['1']."-".$arr_date['0'];
+
         $object = [
             'trans_number' => $trans_number,
             'trans_date'   => Date('Y-m-d'),
             'trans_status' => 3,
             'name'         => $name,
-            'address' => $address,
-            'phone'   => $phone,
-            'notes' => $notes,
+            'address'      => $address,
+            'phone'        => $phone,
+            'notes'        => $notes,
+            'delivery_date_plan'    => $deliv_date,
+            'payment_type_id'       => $payment_status,
             'input_by'      => $this->session->userdata('id'),
             'created_at'    => Date('Y-m-d H:i:s'),
             'total_price'   => $this->input->post('total_price')
@@ -323,7 +343,7 @@ class Transactions extends CI_Controller
             $this->db->trans_rollback();
             $message = '
 			<div class="alert alert-danger alert-dismissible fade show" role="alert">
-				<strong>Danger!</strong> Transaction Failed!.
+				<strong>Danger!</strong> Transaction Failed!
 				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -334,7 +354,7 @@ class Transactions extends CI_Controller
             $this->db->trans_commit();
             $message = '
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>Success!</strong> Transaction Success!.
+                    <strong>Success!</strong> Transaction Success!
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

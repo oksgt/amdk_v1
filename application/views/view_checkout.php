@@ -16,6 +16,11 @@
         <div class="row">
 
             <div class="col align-self-center">
+                <div id="alert-container">
+                    <?=
+                        $this->session->flashdata('item');
+                    ?>
+                </div>
                 <div class="card">
                     <div class="card-header">
                         Details No. Trans: <?= $trans_number ?>
@@ -51,7 +56,8 @@
                                     <div class="form-group">
                                         <label for="input_delivery">Delivery Date</label>
                                         <div class="datepicker date input-group">
-                                            <input type="text" placeholder="Choose Delivery Date Plan" class="form-control" id="input_delivery" name="input_delivery">
+                                            <input type="text" placeholder="Choose Delivery Date Plan" 
+                                            class="form-control" id="input_delivery" name="input_delivery" required>
                                             <div class="input-group-append">
                                             <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                             </div>
