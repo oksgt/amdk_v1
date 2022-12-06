@@ -95,12 +95,12 @@ class Login extends CI_Controller
 
     // public function add_user()
     // {
-        // $data = array(
-        //     'role_id'         => 1,
-        //     'name'            => 'Pak Rudy',
-        //     'username'        => 'admin',
-        //     'password'        => $this->hash_string('admin'),
-        // );
+    //     $data = array(
+    //         'role_id'         => 1,
+    //         'name'            => 'Pak Rudy',
+    //         'username'        => 'admin',
+    //         'password'        => $this->hash_string('admin'),
+    //     );
     //     $insertedId = $this->model->save($data);
     //     echo $insertedId;
     // }

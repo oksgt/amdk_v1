@@ -47,7 +47,7 @@
                             </div>
                     </div>
                     <div class="card-footer d-flex">
-                        <a role="button" href="<?= base_url('products') ?>" class="btn btn-outline-secondary mr-auto" >Back</a>
+                        <a role="button" href="<?= base_url('stocks') ?>" class="btn btn-outline-secondary mr-auto" >Back</a>
                         <button type="submit" class="btn btn-primary">Save</button>
                         </form>
                     </div>

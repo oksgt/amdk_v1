@@ -26,7 +26,7 @@
                 <div class="card">
                     <div class="card-header bg-white">
                         <div class="btn-group-sm" role="group">
-                            <a role="button" class="btn btn-primary btn-sm text-white" href="<?= base_url('products/add') ?>">
+                            <a role="button" class="btn btn-primary btn-sm text-white" href="<?= base_url('users/add') ?>">
                                 <b class="ti-plus"></b> Add New User
                             </a>
                             <button type="button" class="btn btn-primary btn-sm" onclick="reload_table()"><b class="ti-reload"></b> Refresh</button>
