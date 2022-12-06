@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="<?php echo base_url() ?>assets/theme/vendors/jqvmap/dist/jqvmap.min.css">
     <link rel="stylesheet" href="<?php echo base_url() ?>assets/theme/css/dataTables.bootstrap.min.css">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.min.css">
 
     <link rel="stylesheet" href="<?php echo base_url() ?>assets/theme/assets/css/style.css">
 
@@ -117,6 +118,8 @@
     <script src="<?php echo base_url() ?>assets/theme/js/datatable/datatables-init.js"></script>
 
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 
     <?php
     $uriSegment = $this->uri->segment(1);

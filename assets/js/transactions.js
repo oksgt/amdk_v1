@@ -4,6 +4,13 @@ var table_trans;
 var save_method;
 
 $(document).ready(function () {
+
+	$('.datepicker').datepicker({
+		language: "en",
+		autoclose: true,
+		format: "dd/mm/yyyy"
+	});
+	
 	form_validation();
 
 	table_view = $("#table-view").DataTable({
