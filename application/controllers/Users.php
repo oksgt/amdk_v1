@@ -42,16 +42,29 @@ class Users extends CI_Controller {
                     </div>
                 ';
             } else {
-                $row[] = '
-                    <div class="btn-group-sm d-flex" role="group" aria-label="Action Button">
-                        <a role="button" class="btn btn-warning btn-sm w-100 text-white" href="'.base_url('/users/edit/'.$r->id).'">
-                            <b class="ti-pencil-alt"></b> Edit
-                        </a>
-                        <button type="button" class="btn bg-white default btn-sm border-0 text-danger w-100" onclick="delete_data('.$r->id.')">
-                            <b class="ti-trash"></b>Delete
-                        </button>
-                    </div>
-                ';
+                if($r->status == 1){
+                    $row[] = '
+                        <div class="btn-group-sm d-flex" role="group" aria-label="Action Button">
+                            <a role="button" class="btn btn-warning btn-sm w-100 text-white" href="'.base_url('/users/edit/'.$r->id).'">
+                                <b class="ti-pencil-alt"></b> Edit
+                            </a>
+                            <button type="button" class="btn bg-white default btn-sm border-0 text-danger w-100" onclick="terminate_user('.$r->id.')">
+                                <b class="ti-trash"></b> Terminate
+                            </button>
+                        </div>
+                    ';
+                } else {
+                    $row[] = '
+                        <div class="btn-group-sm d-flex" role="group" aria-label="Action Button">
+                            <a role="button" class="btn btn-warning btn-sm w-100 text-white" href="'.base_url('/users/edit/'.$r->id).'">
+                                <b class="ti-pencil-alt"></b> Edit
+                            </a>
+                            <button type="button" class="btn btn-success default btn-sm border-0 w-100" onclick="activate_user('.$r->id.')">
+                                <b class="ti-flag-alt"></b> Activate
+                            </button>
+                        </div>
+                    ';
+                }
             }
 			$data[] = $row;
 		}
@@ -341,4 +354,30 @@ class Users extends CI_Controller {
             redirect('users');
         }
     }
+
+    public function terminate(){
+		$input_by = $this->session->userdata('id');
+		$id 	  = $this->input->post('id');
+		
+		$object = [
+			'status'	=> null,
+		];
+
+		$updated = $this->User->update($object, ['id' => $id]);
+
+		echo json_encode(['result' => $updated]);
+	}
+
+    public function activate(){
+		$input_by = $this->session->userdata('id');
+		$id 	  = $this->input->post('id');
+		
+		$object = [
+			'status'	=> 1,
+		];
+
+		$updated = $this->User->update($object, ['id' => $id]);
+
+		echo json_encode(['result' => $updated]);
+	}
 }
