@@ -17,7 +17,7 @@
 
             <div class="col align-self-center">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-body table-responsive">
                         <table id="table-view" class="table table-striped table-bordered table-sm small">
                             <thead>
                                 <tr>

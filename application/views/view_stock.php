@@ -32,7 +32,7 @@
                             <button type="button" class="btn btn-primary btn-sm" onclick="reload_table()"><b class="ti-reload"></b> Refresh</button>
                         </div>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body table-responsive">
                         <table id="table" class="table table-bordered small table-small">
                             <thead>
                                 <tr>

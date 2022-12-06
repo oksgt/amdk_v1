@@ -31,7 +31,7 @@
                             <!-- <button type="button" class="btn btn-primary btn-sm"><b class="ti-reload"></b> Refresh</button> -->
                         </div>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body table-responsive">
                         <table id="table_trans" class="table table-striped table-bordered table-sm small">
                             <thead>
                                 <tr>
