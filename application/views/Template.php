@@ -39,8 +39,8 @@
 
     <!-- Left Panel -->
 
-    <aside id="left-panel" class="left-panel">
-        <nav class="navbar navbar-expand-sm navbar-default">
+    <aside id="left-panel" class="left-panel" style="background-color: #2596be !important">
+        <nav class="navbar navbar-expand-sm navbar-default" style="background-color: #2596be !important">
 
             <div class="navbar-header">
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu" aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">

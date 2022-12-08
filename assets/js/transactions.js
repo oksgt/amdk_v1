@@ -23,7 +23,7 @@ $(document).ready(function () {
 		bInfo: false,
 		// "order": [],
 		ajax: {
-			url: base_url + "/transactions/trans_details_list/"+$('#trans_number').val(),
+			url: base_url + "transactions/trans_details_list/"+$('#trans_number').val(),
 			type: "POST",
 		},
 	});
@@ -38,7 +38,7 @@ $(document).ready(function () {
 		bInfo: false,
 		// "order": [],
 		ajax: {
-			url: base_url + "/transactions/trans_details_list/"+$('#trans_number').val(),
+			url: base_url + "transactions/trans_details_list/"+$('#trans_number').val(),
 			type: "POST",
 		},
 	});
@@ -53,7 +53,7 @@ $(document).ready(function () {
 		bInfo: false,
 		// "order": [],
 		ajax: {
-			url: base_url + "/transactions/trans_list/",
+			url: base_url + "transactions/trans_list/",
 			type: "POST",
 		},
 	});
@@ -126,7 +126,6 @@ function form_validation() {
 						}
 					});
 
-					
 					// close();
 				}
 
@@ -224,24 +223,25 @@ function show_edit(id){
 }
 
 function grand_total(){
-	$.ajax({
-		url: base_url + "transactions/sum_transaction_detail/"+$('#trans_number').val(),
-		method: 'GET',
-		dataType: 'json',
-		success: function (data) {
-			console.log(data.result);
-
-			// Create our number formatter.
-			
-			const formatRupiah = (money) => {
-				return new Intl.NumberFormat('id-ID',
-				{ style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }
-				).format(money);
+	var trans_detail = $('#trans_number').val();
+	if(trans_detail != undefined){
+		$.ajax({
+			url: base_url + "transactions/sum_transaction_detail/"+trans_detail,
+			method: 'GET',
+			dataType: 'json',
+			success: function (data) {
+				console.log(data.result);
+				
+				const formatRupiah = (money) => {
+					return new Intl.NumberFormat('id-ID',
+					{ style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }
+					).format(money);
+				}
+				
+				$('.grand_total').text(formatRupiah(data.result));
 			}
-			
-			$('.grand_total').text(formatRupiah(data.result));
-		}
-	});
+		});
+	}
 }
 
 function check_stock(){

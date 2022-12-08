@@ -37,9 +37,11 @@
                                 <tr>
                                     <th>No. Trans</th>
                                     <th>Trans. Date</th>
-                                    <th>Name</th>
-                                    <th>Address</th>
-                                    <th>Phone</th>
+                                    <th>Customer Info</th>
+                                    <!-- <th>Address</th>
+                                    <th>Phone</th>  -->
+                                    <th>Delivery Date Plan</th>
+                                    <th>Payment Status</th>
                                     <th>Total</th>
                                     <th>Notes</th>
                                     <th>#</th>

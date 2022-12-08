@@ -32,9 +32,9 @@ class Transactions extends CI_Controller
             $row = array();
             $row[] = $r->trans_number;
             $row[] = formatTglIndo($r->trans_date);
-            $row[] = $r->name;
-            $row[] = $r->address;
-            $row[] = $r->phone;
+            $row[] = "Name: ".$r->name."<br>Address: ".$r->address."<br>Phone: ".$r->phone;
+            $row[] = formatTglIndo($r->delivery_date_plan);
+            $row[] = ($r->payment_type_id == 1)? "Paid" : "Pending";
             $row[] = rupiah($r->total_price);
             $row[] = $r->notes;
             $row[] = '
