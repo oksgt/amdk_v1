@@ -30,10 +30,25 @@ class Transactions extends CI_Controller
         foreach ($list as $r) {
             $no++;
             $row = array();
+
+            $status = $r->delivery_status;
+			
+			if($r->delivery_status == 1){
+				$status = "Drafted";
+			} else if($r->delivery_status == 2){
+				$status = "Assigned";
+			} else if($r->delivery_status == 3){
+				$status = "Sending";
+			} else if($r->delivery_status == 4){
+				$status = "Finish";
+			}
+            
             $row[] = $r->trans_number;
             $row[] = formatTglIndo($r->trans_date);
             $row[] = "Name: ".$r->name."<br>Address: ".$r->address."<br>Phone: ".$r->phone;
             $row[] = formatTglIndo($r->delivery_date_plan);
+            $row[] = ($r->delivery_date!=="") ? formatTglIndo_2($r->delivery_date) : "";
+            $row[] = $status;
             $row[] = ($r->payment_type_id == 1)? "Paid" : "Pending";
             $row[] = rupiah($r->total_price);
             $row[] = $r->notes;
@@ -89,6 +104,16 @@ class Transactions extends CI_Controller
 
     public function add()
     {
+        // deleted unused trans number
+        $sql = "delete from transaction_number where transaction_number in (
+            select tn.transaction_number
+            from transaction_number tn
+            left join transactions t 
+            on tn.transaction_number = t.trans_number
+            where t.trans_number is null
+        )";
+        $del_unused_trans_number = $this->db->query($sql);
+
         $sql = "select max(number) as max from transaction_number where input_date = current_date()";
         $count_trans_number = $this->db->query($sql)->row_array();
 

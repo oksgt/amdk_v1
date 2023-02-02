@@ -80,6 +80,8 @@ class Users extends CI_Controller {
 
 	public function changepassword()
 	{
+        // $data = $this->session->userdata();
+        // print_r($data); die;
         $this->template->load('template', 'view_change_password');
 	}
 

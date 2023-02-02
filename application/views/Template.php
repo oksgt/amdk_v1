@@ -51,7 +51,15 @@
             </div>
 
             <div id="main-menu" class="main-menu collapse navbar-collapse">
-                <?php include(APPPATH . '/views/admin_menu.php'); ?>
+                <?php
+                $session = $this->session->userdata();
+                if ($session['role_id'] == 1) {
+                    include(APPPATH . '/views/admin_menu.php');
+                } else {
+                    include(APPPATH . '/views/staff_menu.php');
+                }
+                ?>
+                <?php  ?>
             </div><!-- /.navbar-collapse -->
         </nav>
     </aside><!-- /#left-panel -->
@@ -75,7 +83,14 @@
                     <div class="user-area dropdown float-right">
                         <a href="#" class="dropdown-toggle text-dark" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <!-- <img class="user-avatar rounded-circle" src="images/admin.jpg" alt="Nama"> -->
-                            You're logged in as "<?= $this->session->userdata('name'); ?>"
+                            
+                            <?php
+                            $session = $this->session->userdata();
+                            if ($session['role_id'] == 1) { ?>
+                                You're logged in as "<?= $this->session->userdata('name'); ?>"
+                            <?php } else { ?>
+                            <?php }
+                            ?>
                         </a>
 
                         <div class="user-menu dropdown-menu">
@@ -98,7 +113,8 @@
 
     <!-- Right Panel -->
 
-    <script src="<?php echo base_url() ?>assets/theme/vendors/jquery/dist/jquery.min.js"></script>
+    <!-- <script src="<?php echo base_url() ?>assets/theme/vendors/jquery/dist/jquery.js"></script> -->
+    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
     <script src="<?php echo base_url() ?>assets/theme/vendors/popper.js/dist/umd/popper.min.js"></script>
     <script src="<?php echo base_url() ?>assets/theme/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="<?php echo base_url() ?>assets/theme/assets/js/main.js"></script>
@@ -116,10 +132,15 @@
     <script src="<?php echo base_url() ?>assets/theme/js/datatable/dataTables.buttons.min.js"></script>
     <script src="<?php echo base_url() ?>assets/theme/js/datatable/buttons.bootstrap.min.js"></script>
     <script src="<?php echo base_url() ?>assets/theme/js/datatable/datatables-init.js"></script>
+    <script src="<?php echo base_url() ?>assets/theme/js/jquery.redirect.js"></script>
 
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
+    <script type="text/javascript">
+        var $ = jQuery;
+    </script>
 
     <?php
     $uriSegment = $this->uri->segment(1);
@@ -131,6 +152,8 @@
         <script src="<?= base_url('assets/js/') ?>transactions.js"></script>
     <?php } else if ($uriSegment == "users") { ?>
         <script src="<?= base_url('assets/js/') ?>users.js"></script>
+    <?php } else if ($uriSegment == "deliveries") { ?>
+        <script src="<?= base_url('assets/js/') ?>deliveries.js"></script>
     <?php } else if ($uriSegment == "") { ?>
         <script src="<?= base_url('assets/js/') ?>app.js"></script>
     <?php } else { ?>

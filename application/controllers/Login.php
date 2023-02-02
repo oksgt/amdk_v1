@@ -56,7 +56,12 @@ class Login extends CI_Controller
                             $this->session->unset_userdata([
                                 'password', 'username'
                             ]);
-                            redirect('transactions');
+
+                            if($login_data['role_id'] == 1){
+                                redirect('transactions');
+                            } else {
+                                redirect('dashboard');
+                            }
                         }
                     } else {
                         $this->session->set_flashdata('message', '<span class="login100-form-title text-danger bg-light" style="margin-bottom: 10px;

@@ -1,52 +1,36 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Transaction extends CI_Model
+class Delivery extends CI_Model
 {
 
-    var $table = 'transactions';
-    var $view = 'view_trans';
-    var $column_order = array(
-        'id',
-        'trans_number',
-        'trans_date',
-        'trans_status',
-        'name',
-        'address',
-        'phone',
-        'delivery_date_plan',
-        'delivery_code_fix',
-        'delivery_status',
-        'delivery_date',
-        'payment_type_id',
-        'notes',
-        'input_by',
-        'deleted_at',
-        'created_at',
-        'updated_at',
-        'total_price'
-    );
-    var $column_search = array(
-        'id',
-        'trans_number',
-        'trans_date',
-        'trans_status',
-        'name',
-        'address',
-        'phone',
-        'delivery_date_plan',
-        'delivery_code_fix',
-        'delivery_status',
-        'delivery_date',
-        'payment_type_id',
-        'notes',
-        'input_by',
-        'deleted_at',
-        'created_at',
-        'updated_at',
-        'total_price'
-    );
-    var $order = array('id' => 'desc');
+    var $table = 'delivery';
+    var $view = 'delivery';
+    var $column_order = array('
+        id,
+        delivery_code,
+        delivery_status,
+        notes,
+        delivery_date,
+        batch,
+        input_by,
+        deleted_at,
+        created_at,
+        updated_at
+    ');
+    var $column_search = array('
+        id,
+        delivery_code,
+        delivery_status,
+        notes,
+        delivery_date,
+        batch,
+        input_by,
+        deleted_at,
+        created_at,
+        updated_at
+    ');
+    var $order = array('delivery_date' => 'desc');
 
     public function __construct()
     {
@@ -55,6 +39,9 @@ class Transaction extends CI_Model
 
     private function _get_datatables_query()
     {
+
+        // $where = array('deleted_at = "" ');
+        $this->db->where('deleted_at = "" or deleted_at is null');
         $this->db->from($this->view);
         $i = 0;
         foreach ($this->column_search as $item) {
@@ -98,10 +85,11 @@ class Transaction extends CI_Model
 
     public function count_all()
     {
+        // $where = array('deleted_at = "" ');
+        $this->db->where('deleted_at = "" or deleted_at is null');
         $this->db->from($this->view);
         return $this->db->count_all_results();
     }
-
 
     public function cek_login($table, $where)
     {

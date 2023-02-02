@@ -13,6 +13,7 @@ $(document).ready(function () {
 		autoWidth: false,
 		bPaginate: false,
 		bInfo: false,
+		search: false,
 		// "order": [],
 		ajax: {
 			url: base_url + "/users/list_user/",
