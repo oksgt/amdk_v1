@@ -126,7 +126,7 @@ class Stock extends CI_Model
     }
 
     public function summary_stock($id_product){
-        $sql = "select sum(input_stock) as total from stocks s where id_product = ".$id_product;
+        $sql = "select sum(input_stock) as total from stocks s where id_product = ".$id_product." and deleted_by is null";
         return $this->db->query($sql);
     }
 

@@ -83,7 +83,7 @@
                     <div class="user-area dropdown float-right">
                         <a href="#" class="dropdown-toggle text-dark" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <!-- <img class="user-avatar rounded-circle" src="images/admin.jpg" alt="Nama"> -->
-                            
+
                             <?php
                             $session = $this->session->userdata();
                             if ($session['role_id'] == 1) { ?>
@@ -133,6 +133,7 @@
     <script src="<?php echo base_url() ?>assets/theme/js/datatable/buttons.bootstrap.min.js"></script>
     <script src="<?php echo base_url() ?>assets/theme/js/datatable/datatables-init.js"></script>
     <script src="<?php echo base_url() ?>assets/theme/js/jquery.redirect.js"></script>
+    <!-- <script src="https://js.pusher.com/7.2/pusher.min.js"></script> -->
 
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -140,6 +141,24 @@
 
     <script type="text/javascript">
         var $ = jQuery;
+    </script>
+
+    <script>
+        // $(document).ready(function(){
+        //     Pusher.logToConsole = true;
+
+        //     var pusher = new Pusher('cfbfa9d8250ed3b8bf69', {
+        //         cluster: 'ap1',
+        //         forceTLS: true
+        //     });
+
+        //     var channel = pusher.subscribe('my-channel');
+        //     channel.bind('my-event', function(data) {
+        //         // alert(JSON.stringify(data));
+        //         alert(data.message);
+        //     });
+        // });
+        
     </script>
 
     <?php
@@ -154,8 +173,8 @@
         <script src="<?= base_url('assets/js/') ?>users.js"></script>
     <?php } else if ($uriSegment == "deliveries") { ?>
         <script src="<?= base_url('assets/js/') ?>deliveries.js"></script>
-    <?php } else if ($uriSegment == "") { ?>
-        <script src="<?= base_url('assets/js/') ?>app.js"></script>
+    <?php } else if ($uriSegment == "dashboard") { ?>
+        <script src="<?= base_url('assets/js/') ?>dashboard.js"></script>
     <?php } else { ?>
         <script src="<?= base_url('assets/js/') ?>app.js"></script>
     <?php } ?>

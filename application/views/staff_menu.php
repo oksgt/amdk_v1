@@ -1,7 +1,7 @@
 <ul class="nav navbar-nav text-white">
     <h3 class="menu-title text-center text-white"><?= $this->session->userdata('role_name'); ?></h3>
 
-    <li class="color: white !important">
+    <!-- <li class="color: white !important">
         <a style="color: white !important; text-decoration: none;" href="<?= base_url('todaydelivery') ?>" >
         <i class="menu-icon ti-shopping-cart-full text-white"></i>Today Delivery </a>
     </li>
@@ -9,7 +9,7 @@
     <li>
         <a style="color: white !important; text-decoration: none;" href="<?= base_url('deliveries') ?>">
         <i class="menu-icon ti-truck text-white"></i>History Delivery </a>
-    </li>
+    </li> -->
 
 
     <!-- <li>

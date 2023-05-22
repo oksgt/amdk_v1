@@ -39,12 +39,26 @@ class Deliveries extends CI_Controller {
 				$status = "Finish";
 			}
 
+			$sql = "select count(1) as total_order from delivery_details dd where delivery_code = '".$r->delivery_code."'";
+			$total_order_arr = $this->db->query($sql)->row_array();
+			$total_order = $total_order_arr['total_order'];
+		
+			$sql = "select count(1) as total_order_done from delivery_details dd where delivery_code = '".$r->delivery_code."' 
+			and received_at is not null";
+			$total_order_done_arr = $this->db->query($sql)->row_array();
+			$total_order_done = $total_order_done_arr['total_order_done'];
+			
+			$sql = "select count(1) as total_order_pending from delivery_details dd where delivery_code = '".$r->delivery_code."' 
+			and received_at is not null";
+			$total_order_pending_arr = $this->db->query($sql)->row_array();
+			$total_order_pending = $total_order_pending_arr['total_order_pending'];
+
 			$no++;
 			$row = array();
 			$row[] = formatTglIndo($r->delivery_date);
 			$row[] = $r->delivery_code;
 			$row[] = $status;
-
+			$row[] = "Total Order Item: ".$total_order."<br>Total Terkirim: ".$total_order_done."<br>Total Pending: ".$total_order_pending;
 			$row[] = '
 				<div class="btn-group-sm d-flex" role="group" aria-label="Action Button">
 					<a role="button" class="btn btn-primary btn-sm w-100 text-white" href="'.base_url('/deliveries/edit/'.$r->id).'">
@@ -370,11 +384,13 @@ class Deliveries extends CI_Controller {
 		// echo $existing['delivery_code']; die;
 		$data['delivery_code'] = $existing['delivery_code'];
 		$data['delivery_status'] = $existing['delivery_status'];
+		$data['delivery_date'] = $existing['delivery_date'];
         $data['batch'] = $existing['batch'];
 		$data['id'] = $id;
 
 		$ready_to_deliver = $this->db->query("
-			select dd.id, dd.delivery_code, t.trans_number, t.name, t.address, t.phone, t.delivery_date_plan
+			select dd.id, dd.delivery_code, t.trans_number, t.name, t.address, t.phone, t.delivery_date_plan,
+			dd.received_at, dd.notes as received_notes
 			from transactions t 
 			join delivery_details dd 
 			on t.trans_number = dd.trans_number 

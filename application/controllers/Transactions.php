@@ -45,7 +45,7 @@ class Transactions extends CI_Controller
             
             $row[] = $r->trans_number;
             $row[] = formatTglIndo($r->trans_date);
-            $row[] = "Name: ".$r->name."<br>Address: ".$r->address."<br>Phone: ".$r->phone;
+            $row[] = "Jenis Pelanggan: ".$r->jenis_pelanggan."<br>Name: ".$r->name."<br>Address: ".$r->address."<br>Phone: ".$r->phone;
             $row[] = formatTglIndo($r->delivery_date_plan);
             $row[] = ($r->delivery_date!=="") ? formatTglIndo_2($r->delivery_date) : "";
             $row[] = $status;
@@ -88,6 +88,9 @@ class Transactions extends CI_Controller
 					<button role="button" class="btn btn-warning btn-sm w-100 text-white" onclick="show_edit(' . $r->id . ')">
 						<b class="ti-pencil-alt"></b> Edit
 					</button>
+                    <button role="button" class="btn btn-danger btn-sm w-100" onclick="delete_confirm(' . $r->id . ')">
+						<b class="ti-trash"></b> Delete
+					</button>
 				</div>
 			';
             $data[] = $row;
@@ -100,6 +103,15 @@ class Transactions extends CI_Controller
             "data" => $data,
         );
         echo json_encode($output);
+    }
+
+    public function delete_item($id){
+        $delete = $this->Trans_detail->delete($id);
+        if($delete > 0){
+            echo json_encode(['result' => true]);
+        } else {
+            echo json_encode(['result' => false]);
+        }
     }
 
     public function add()
@@ -238,7 +250,8 @@ class Transactions extends CI_Controller
                 'trans_number'      => $this->input->post('trans_number'),
                 'id_product'        => $this->input->post('product'),
                 'qty'               => $this->input->post('input_qty'),
-                'price'             => $product['price'],
+                'price'               => $this->input->post('input_harga'),
+                // 'price'             => $product['price'],
                 'sub_total_price'   => $product['price'] * $this->input->post('input_qty'),
                 'notes'             => '-',
                 'trans_status'      => 1,
@@ -293,6 +306,8 @@ class Transactions extends CI_Controller
         foreach ($cek as $key => $value) {
             $total_price += $value->sub_total_price;
         }
+
+        $data['customer_type'] = $this->db->query("select * from jenis_pelanggan")->result();
         $data['trans_number'] = $trans_number;
         $data['total_price']  = $total_price;
         $this->template->load('template', 'view_checkout', $data);
@@ -307,6 +322,7 @@ class Transactions extends CI_Controller
         $trans_number = $this->input->post('trans_number');
         $deliv_date   = $this->input->post('input_delivery');
         $payment_status = $this->input->post('input_payment_status');
+        $jenis_pelanggan =  $this->input->post('input_customer_type'); 
 
         if($payment_status == 0){
             $message = '
@@ -353,7 +369,8 @@ class Transactions extends CI_Controller
             'payment_type_id'       => $payment_status,
             'input_by'      => $this->session->userdata('id'),
             'created_at'    => Date('Y-m-d H:i:s'),
-            'total_price'   => $this->input->post('total_price')
+            'total_price'   => $this->input->post('total_price'),
+            'jenis_pelanggan' => $jenis_pelanggan
         ];
 
         $insert = $this->Transaction->save($object);
@@ -390,4 +407,6 @@ class Transactions extends CI_Controller
 
         redirect(base_url('transactions'));
     }
+
+
 }

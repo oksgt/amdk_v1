@@ -28,6 +28,7 @@ class Login extends CI_Controller
             'username' => $username
         );
         $cek = $this->model->cek_login("users", $where);
+        // print_r($cek->result()); die;
         if (!$cek->result()) {
             $this->session->set_flashdata('message', '
             <span class="login100-form-title text-danger bg-light" style="margin-bottom: 10px;
@@ -37,33 +38,44 @@ class Login extends CI_Controller
             ');
             redirect("login", "refresh");
         } else {
-            
             if ($cek->num_rows() >= 1) {
                 foreach ($cek->result() as $row) {
                     $verify = $this->hash_verify($plain_password, $row->password);
+                    // echo $row->password;
+                    // echo $verify; die;
                     if ($verify == TRUE) {
                         $login_data = $cek->row_array();
                         if (!empty($login_data)) {
-                            
-                            $login_data['status'] = 'loggedin';
-                            $this->session->set_userdata($login_data);
-                            $session = $this->session->userdata();
 
-                            $sql = "select role_name from user_roles where id = ".$session['role_id'];
-                            $data = $this->db->query($sql)->row_array();
-                            $login_data['role_name'] = $data['role_name'];
-                            
-                            $this->session->unset_userdata([
-                                'password', 'username'
-                            ]);
-
-                            if($login_data['role_id'] == 1){
-                                redirect('transactions');
+                            // print_r($login_data); die;
+                            if($login_data['status'] == null || $login_data['status'] == ""){
+                                $this->session->set_flashdata('message', '<span class="login100-form-title text-danger bg-light" style="margin-bottom: 10px;
+                                border-radius: 12px; font-size: 20px; padding: 10px 0px 10px 0px; font-weight:bold;">
+                                    User is not active!
+                                </span>');
+                                redirect("login", "refresh");
                             } else {
-                                redirect('dashboard');
+                                $login_data['status'] = 'loggedin';
+                                $this->session->set_userdata($login_data);
+                                $session = $this->session->userdata();
+
+                                $sql = "select role_name from user_roles where id = ".$session['role_id'];
+                                $data = $this->db->query($sql)->row_array();
+                                $login_data['role_name'] = $data['role_name'];
+                                
+                                $this->session->unset_userdata([
+                                    'password', 'username'
+                                ]);
+
+                                if($login_data['role_id'] == 1){
+                                    redirect('transactions');
+                                } else {
+                                    redirect('dashboard');
+                                }
                             }
                         }
                     } else {
+                        // echo "False";
                         $this->session->set_flashdata('message', '<span class="login100-form-title text-danger bg-light" style="margin-bottom: 10px;
                         border-radius: 12px; font-size: 20px; padding: 10px 0px 10px 0px; font-weight:bold;">
                             Wrong password!</span>');
@@ -96,6 +108,10 @@ class Login extends CI_Controller
     {
         $this->session->sess_destroy();
         redirect('login');
+    }
+
+    function test_hash(){
+        echo $this->hash_string('staff_1');
     }
 
     // public function add_user()

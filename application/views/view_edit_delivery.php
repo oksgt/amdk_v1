@@ -26,7 +26,7 @@
 
                 <div class="card">
                     <div class="card-header">
-                    <?php
+                        <?php
 
                         if ($delivery_status == 1) {
                             echo 'Edit Delivery';
@@ -35,7 +35,7 @@
                         }
 
                         ?>
-                        
+
                     </div>
                     <div class="card-body">
                         <!-- <form method="post"> -->
@@ -43,7 +43,19 @@
                             <div class="form-group row">
                                 <label for="input_delivery_date" class="col-sm-4 col-form-label">Delivery Date</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="input_delivery_date" name="input_delivery_date" value="<?= formatTglIndo(Date('Y-m-d')) ?>" readonly>
+                                    <input type="text" class="form-control" id="input_delivery_date" name="input_delivery_date" 
+                                    <?php
+
+                                        if ($delivery_status == 1) {
+                                            echo '<th>#</th>';
+                                            echo "value=".formatTglIndo(Date('Y-m-d'))." readonly";
+                                        } else {
+                                            echo "value=".formatTglIndo_2($delivery_date)." readonly";
+                                        }
+
+                                        ?>
+                                    
+                                    >
                                 </div>
                             </div>
                         </div>
@@ -75,7 +87,15 @@
                                     <tr>
                                         <th>Trans Number</th>
                                         <th>Detail</th>
-                                        <th>#</th>
+                                        <?php
+
+                                        if ($delivery_status == 1) {
+                                            echo '<th>#</th>';
+                                        } else {
+                                            echo '<th>Delivery Status</th>';
+                                        }
+
+                                        ?>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -93,9 +113,9 @@
                                                             Cancel
                                                         </button>';
                                                     } else {
-                                                        echo '<button class="btn btn-sm btn-block btn-danger" disabled="true" onclick="cancel_list(<?= $value->id ?>)">
-                                                        Cancel
-                                                    </button>';
+                                                        if($value->received_at !== null){
+                                                            echo '<h6><span class="badge badge-success">Sent</span></h6>Notes: '.$value->received_notes ;
+                                                        }
                                                     }
 
                                                     ?>

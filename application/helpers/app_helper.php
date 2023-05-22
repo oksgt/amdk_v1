@@ -439,4 +439,22 @@ function sum_the_time($time1, $time2) {
   return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
 }
 
+function pusher_notif($message_data){
+  // require_once(FCPATH.'vendor/autoload.php');
+	// 		$options = array(
+	// 			'cluster' => 'ap1',
+	// 			'useTLS' => true
+	// 		);
+			
+	// 		$pusher = new Pusher\Pusher(
+	// 			'cfbfa9d8250ed3b8bf69',
+	// 			'52d5204062ffe697e18f',
+	// 			'1546963',
+	// 			$options
+	// 		);
+	
+	// 		// $data['message'] = 'success';
+	// 		$pusher->trigger('my-channel', 'my-event', $message_data);
+}
+
 ?>

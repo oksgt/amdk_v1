@@ -38,6 +38,7 @@
                                     <th>Delivery Date</th>
                                     <th>Delivery Code</th>
                                     <th>Delivery Status</th>
+                                    <th>Delivery Info</th>
                                     <th>#</th>
                                 </tr>
                             </thead>

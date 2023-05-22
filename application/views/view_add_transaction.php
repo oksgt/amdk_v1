@@ -19,7 +19,8 @@
                 <div class="card">
                     <div class="card-header bg-white">
                         <div class="btn-group-sm" role="group">
-                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addProduct"><b class="ti-plus"></b> Add Item</button>
+                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" 
+                            data-target="#addProduct"><b class="ti-plus"></b> Add Item</button>
                             <button type="button" class="btn btn-primary btn-sm" onclick="reload_table()"><b class="ti-reload"></b> Refresh</button>
                         </div>
                     </div>
@@ -73,7 +74,7 @@
                             <?php
 
                             foreach ($product as $key => $value) {
-                                echo '<option value="' . $value->id . '">' . $value->name . ' (Stock ' . $value->stock . ' ' . $value->unit . ')</option>';
+                                echo '<option value="' . $value->id . '">' . $value->name . ' (Sisa Stock ' . $value->stock . ' ' . $value->unit . ' - @ '.rupiah($value->price).')</option>';
                             }
 
                             ?>
@@ -86,6 +87,13 @@
                         <input type="text" class="form-control" name="input_qty" id="input_qty" 
                         placeholder="Item Quantity" >
                         <small id="input_qty_error_detail" class="form-text text-danger"></small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="input_qty">Price</label>
+                        <input type="text" class="form-control" name="input_harga" id="input_harga" 
+                        placeholder="Harga Jual" required>
+                        <small id="input_harga_error_detail" class="form-text text-danger"></small>
                     </div>
                     <!-- <div class="form-group">
                         <label for="notes">Notes</label>

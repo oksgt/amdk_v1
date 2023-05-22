@@ -173,6 +173,33 @@ function reload_table() {
 	$("#table").DataTable().ajax.reload();
 }
 
+function delete_confirm(id) {
+	Swal.fire({
+		title: "Apakah anda yakin?",
+		text: "Data barang akan dihapus dari transaksi ini!",
+		icon: "warning",
+		showCancelButton: true,
+		confirmButtonText: "Yes",
+	}).then((result) => {
+		if (result.value) {
+			$.ajax({
+				url: base_url + "transactions/delete_item/" + id,
+				type: "POST",
+				dataType: "json",
+				success: function (data) {
+					if (data.result) {
+						Swal.fire("Good job!", "Data deleted successfully!", "success");
+						reload_table();
+						grand_total();
+					} else {
+						Swal.fire("Oups!", data.message, "warning");
+					}
+				},
+			});
+		}
+	});
+}
+
 function show_edit(id){
 	// console.log('oke');
 	Swal.fire({

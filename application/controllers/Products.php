@@ -88,6 +88,11 @@ class Products extends CI_Controller {
 			</div>
 			';
 			$this->session->set_flashdata('item', $message);
+
+			//kirim notif ke pusher
+			$data['message'] = 'sip';
+			pusher_notif($data);
+			
 		} else {
 			$message = '
 			<div class="alert alert-danger alert-dismissible fade show" role="alert">

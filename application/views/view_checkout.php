@@ -37,6 +37,18 @@
                             <div class="row">
                                 <div class="col-lg">
                                     <div class="form-group">
+                                        <label for="input_name">Customer Type</label>
+                                        <select class="custom-select" name="input_customer_type" id="input_customer_type">
+                                            <?php
+
+                                            foreach ($customer_type as $key => $value) {
+                                                echo '<option value="' . $value->id . '">' .$value->jenis_pelanggan.'</option>';
+                                            }
+
+                                            ?>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
                                         <label for="input_name">Name</label>
                                         <input type="text" class="form-control"  name="input_name" id="input_name"
                                         data-type="currency" placeholder="Type Customer Name" required>
@@ -80,7 +92,7 @@
                             </div>
                     </div>
                     <div class="card-footer d-flex">
-                        <a role="button" href="<?= base_url('transactions/add') ?>" class="btn btn-outline-secondary mr-auto" >Cancel</a>
+                        <a role="button" class="btn btn-outline-secondary mr-auto" >Cancel</a>
                         <button type="submit" class="btn btn-primary">Finish</button>
                         </form>
                     </div>

@@ -28,7 +28,7 @@
                     <div class="card-header bg-white">
                         <div class="btn-group-sm" role="group">
                             <a type="button" class="btn btn-primary btn-sm" href="<?= base_url('transactions/add') ?>"><b class="ti-plus"></b> Add New Transaction</a>
-                            <!-- <button type="button" class="btn btn-primary btn-sm"><b class="ti-reload"></b> Refresh</button> -->
+                            <!-- <button type="button" class="btn btn-primary btn-sm"><b class="ti-reload"></b> Push</button> -->
                         </div>
                     </div>
                     <div class="card-body table-responsive">
