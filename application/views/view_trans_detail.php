@@ -18,6 +18,23 @@
             <div class="col align-self-center">
                 <div class="card">
                     <div class="card-body table-responsive">
+                        <div class="col-12 mb-4 table-responsive">
+                            <table class="" width="100%">
+                                <tr>
+                                    <td><h6>Nama: <?= ucwords($summary['name'] )." (".$summary['jenis_pelanggan'].")"?></h6></td>
+                                </tr>
+                                <tr>
+                                    <td><h6>Alamat: <?= ucwords($summary['address'] )?></h6></td>
+                                </tr>
+                                <tr>
+                                    <td><h6>Tanggal : <?= formatTglIndo($summary['trans_date']) ?></h6></td>
+                                </tr>
+                                <tr>
+                                    <td><h6>Phone: <?= ucwords($summary['phone'] )?></h6></td>
+                                </tr>
+                            </table>
+                            
+                        </div>
                         <table id="table-view" class="table table-striped table-bordered table-sm small">
                             <thead>
                                 <tr>
@@ -30,8 +47,14 @@
                             <tbody>
                             </tbody>
                         </table>
-                        <div class="col-md-12 text-right">
-                            <h2 class="grand_total"></h2>
+                        <div class="col-12">
+                            <div class="col-md-6 text-left p-2">
+                                <h6>Permintaan pengiriman: <?= formatTglIndo($summary['delivery_date_plan']) ?></h6>
+                                <h6>Notes: <?= $summary['notes'] ?></h6>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <h2 class="grand_total"></h2>
+                            </div>
                         </div>
                     </div>
                     <div class="card-footer d-flex">

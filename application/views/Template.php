@@ -43,11 +43,22 @@
         <nav class="navbar navbar-expand-sm navbar-default" style="background-color: #2596be !important">
 
             <div class="navbar-header">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu" aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu" 
+                aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
                     <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand" href="./"><img src="<?php echo base_url() ?>assets/theme/img/logopdam_bg.png" alt="AMDK" width="45" height="30"> PERUMDAM TS</a>
-                <!-- <a class="navbar-brand hidden" href="./"><img src="<?php echo base_url() ?>assets/theme/img/logopdam_bg.png" alt="AMDK" width="90" height="60"></a> -->
+                <?php
+                $session = $this->session->userdata();
+                if ($session['role_id'] == 1) { ?>
+                    <a class="navbar-brand" href="<?php echo base_url('/transactions') ?>"><img src="<?php echo base_url() ?>assets/theme/img/logopdam_bg.png" 
+                alt="AMDK" width="45" height="30"> AMDK - Perumdam TS</a>
+                <?php } else { ?>
+                    <a class="navbar-brand" href="<?php echo base_url('/dashboard') ?>"><img src="<?php echo base_url() ?>assets/theme/img/logopdam_bg.png" 
+                alt="AMDK" width="45" height="30"> AMDK - Perumdam TS</a>
+                <?php }
+                ?>
+                <?php  ?>
+                
             </div>
 
             <div id="main-menu" class="main-menu collapse navbar-collapse">
@@ -89,6 +100,7 @@
                             if ($session['role_id'] == 1) { ?>
                                 You're logged in as "<?= $this->session->userdata('name'); ?>"
                             <?php } else { ?>
+                                You're logged in as "<?= $this->session->userdata('name'); ?>"
                             <?php }
                             ?>
                         </a>

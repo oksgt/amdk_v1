@@ -21,6 +21,7 @@ class Transaction extends CI_Model
         'delivery_date',
         'payment_type_id',
         'notes',
+        'input_by_name',
         'input_by',
         'deleted_at',
         'created_at',
@@ -40,6 +41,7 @@ class Transaction extends CI_Model
         'delivery_code_fix',
         'delivery_status',
         'delivery_date',
+        'input_by_name',
         'payment_type_id',
         'notes',
         'input_by',
@@ -57,6 +59,7 @@ class Transaction extends CI_Model
 
     private function _get_datatables_query()
     {
+        $this->db->where('input_by', $this->session->userdata('id'));            
         $this->db->from($this->view);
         $i = 0;
         foreach ($this->column_search as $item) {

@@ -43,14 +43,15 @@
                             <div class="form-group row">
                                 <label for="input_delivery_date" class="col-sm-4 col-form-label">Delivery Date</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="input_delivery_date" name="input_delivery_date" 
+                                    <input type="text" class="form-control" id="input_delivery_date" 
+                                    name="input_delivery_date" 
                                     <?php
 
                                         if ($delivery_status == 1) {
-                                            echo '<th>#</th>';
-                                            echo "value=".formatTglIndo(Date('Y-m-d'))." readonly";
+                                            // echo '<th>#</th>';
+                                            echo "value=".Date('Y-m-d')." readonly";
                                         } else {
-                                            echo "value=".formatTglIndo_2($delivery_date)." readonly";
+                                            echo "value='".$delivery_date."' readonly";
                                         }
 
                                         ?>

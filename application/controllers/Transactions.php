@@ -19,7 +19,6 @@ class Transactions extends CI_Controller
     public function index()
     {
         $this->template->load('template', 'view_transactions');
-        // echo Date('Ymd');
     }
 
     public function trans_list()
@@ -42,23 +41,71 @@ class Transactions extends CI_Controller
 			} else if($r->delivery_status == 4){
 				$status = "Finish";
 			}
+
+            $payment_badge = ($r->payment_type_id == 2) ? '<span class="badge badge-warning">Piutang</span></h4>' : '<span class="badge badge-success">Lunas</span></h4>';
             
-            $row[] = $r->trans_number;
-            $row[] = formatTglIndo($r->trans_date);
-            $row[] = "Jenis Pelanggan: ".$r->jenis_pelanggan."<br>Name: ".$r->name."<br>Address: ".$r->address."<br>Phone: ".$r->phone;
-            $row[] = formatTglIndo($r->delivery_date_plan);
-            $row[] = ($r->delivery_date!=="") ? formatTglIndo_2($r->delivery_date) : "";
-            $row[] = $status;
-            $row[] = ($r->payment_type_id == 1)? "Paid" : "Pending";
-            $row[] = rupiah($r->total_price);
-            $row[] = $r->notes;
             $row[] = '
-				<div class="btn-group-sm d-flex" role="group" aria-label="Action Button">
-					<a role="button" class="btn btn-info btn-sm w-100 text-white" href="' . base_url('transactions/view/' . $r->trans_number) . '">
-						<b class="ti-eye"></b> View
-					</a>
-				</div>
-			';
+                <div class=" justify-content-center mb-3">
+                    <div class="col-md-12 col-xl-12 p-0">
+                    <div class="card shadow-0 border rounded-3">
+                        <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8 col-lg-8 col-xl-8">
+                            <h5>No. '.$r->trans_number.'</h5>
+                            <div class="d-flex flex-row">
+                                <span>Tanggal order : '.formatTglIndo($r->trans_date).'</span>
+                            </div>
+                            <div class="mt-1 mb-0 text-muted small" style="font-size: 13px !important;">
+                                <span>Input by '.$r->input_by_name.' @ '.formatTglIndo_datetime($r->created_at).'</span>
+                            </div>
+                            
+                            <hr>
+                            <p class="text-truncate mb-2 mb-md-0">
+                                Nama: '.ucwords($r->name).' ('.ucwords($r->jenis_pelanggan).')
+                            </p>
+                            <p class="text-truncate mb-2 mb-md-0">
+                                Alamat: '.ucwords($r->address).'
+                            </p>
+                            <p class="text-truncate mb-2 mb-md-0">
+                                Phone: '.ucwords($r->phone).'
+                            </p>
+                            <p class="text-truncate mb-2 mb-md-0">
+                                Notes: '.ucwords($r->notes).'
+                            </p>
+                            </div>
+                            <div class="col-md-4 col-lg-4 col-xl-4 border-sm-start-none border-start">
+                            <div class="d-flex flex-row align-items-center mb-1">
+                                <h4 class="mb-1 me-1">Total Harga : Rp. '.rupiah($r->total_price).' 
+                                '.$payment_badge.'
+                            </div>
+                            <h6 class="text-success">Rencana Pengiriman : '.formatTglIndo($r->delivery_date_plan).'</h6>
+                            <div class="d-flex flex-column mt-4">
+                                <a role="button" class="btn btn-info btn-sm w-100 text-white" href="' . base_url('transactions/view/' . $r->trans_number) . '">
+                                    <b class="ti-eye"></b> View
+                                </a>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            ';
+            // $row[] = formatTglIndo($r->trans_date);
+            // $row[] = "Jenis Pelanggan: ".$r->jenis_pelanggan."<br>Name: ".$r->name."<br>Address: ".$r->address."<br>Phone: ".$r->phone;
+            // $row[] = formatTglIndo($r->delivery_date_plan);
+            // $row[] = ($r->delivery_date!=="") ? formatTglIndo_2($r->delivery_date) : "";
+            // $row[] = $status;
+            // $row[] = ($r->payment_type_id == 1)? "Paid" : "Pending";
+            // $row[] = rupiah($r->total_price);
+            // $row[] = $r->notes;
+            // $row[] = '
+			// 	<div class="btn-group-sm d-flex" role="group" aria-label="Action Button">
+					// <a role="button" class="btn btn-info btn-sm w-100 text-white" href="' . base_url('transactions/view/' . $r->trans_number) . '">
+					// 	<b class="ti-eye"></b> View
+					// </a>
+			// 	</div>
+			// ';
             $data[] = $row;
         }
 
@@ -86,10 +133,10 @@ class Transactions extends CI_Controller
             $row[] = '
 				<div class="btn-group-sm d-flex" role="group" aria-label="Action Button">
 					<button role="button" class="btn btn-warning btn-sm w-100 text-white" onclick="show_edit(' . $r->id . ')">
-						<b class="ti-pencil-alt"></b> Edit
+						<b class="ti-pencil-alt"></b> 
 					</button>
                     <button role="button" class="btn btn-danger btn-sm w-100" onclick="delete_confirm(' . $r->id . ')">
-						<b class="ti-trash"></b> Delete
+						<b class="ti-trash"></b> 
 					</button>
 				</div>
 			';
@@ -146,6 +193,10 @@ class Transactions extends CI_Controller
         }
     }
 
+    public function test(){
+        $this->template->load('template', 'test');
+    }
+
     public function view($transaction_number = "")
     {
 
@@ -153,6 +204,9 @@ class Transactions extends CI_Controller
             redirect('transactions');
         }
         $data['trans_number']   = $transaction_number;
+        $data['summary']        = $this->db->query("select * from view_trans where trans_number = '".$transaction_number."'")->row_array();
+        // echo "<pre>";
+        // print_r($data['summary'] ); die;
         $this->template->load('template', 'view_trans_detail', $data);
     }
 
@@ -271,7 +325,8 @@ class Transactions extends CI_Controller
 
     public function sum_transaction_detail($trans_number)
     {
-        $sql = "select sum(sub_total_price) as grand_total  from view_trans_detail vtd where vtd.trans_number = '" . $trans_number . "'";
+        $sql = "select sum(sub_total_price) as grand_total from view_trans_detail vtd 
+        where vtd.trans_number = '" . $trans_number . "' and input_by = " . $this->session->userdata('id') . "";
         $result = $this->db->query($sql)->row_array();
         $grand_total = ($result['grand_total'] == null || $result['grand_total'] == '') ? 0 : $result['grand_total'];
         echo json_encode(['result' => $grand_total]);

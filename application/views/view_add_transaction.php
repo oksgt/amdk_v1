@@ -2,7 +2,7 @@
     <div class="col-sm-12">
         <div class="page-header float-left">
             <div class="page-title">
-                <h1>Transaction Details No . <?= $trans_number ?></h1>
+                <h1>Transaction Details No. <?= $trans_number ?></h1>
             </div>
         </div>
     </div>
@@ -24,7 +24,7 @@
                             <button type="button" class="btn btn-primary btn-sm" onclick="reload_table()"><b class="ti-reload"></b> Refresh</button>
                         </div>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body table-responsive">
                         <table id="table" class="table table-striped table-bordered table-sm small">
                             <thead>
                                 <tr>

@@ -25,9 +25,13 @@ class Dashboard extends CI_Controller {
 		// join delivery_staff ds on d.delivery_code = ds.delivery_code 
 		// where d.delivery_status = 2 and ds.id_staff = ".$session_data['id'];
 		$sql = "
-		select count(1) as total from delivery_details dd 
+		select 
+		count(1) as total
+		from delivery_details dd 
 		join delivery_staff ds on dd.delivery_code = ds.delivery_code 
+		join delivery d on d.delivery_code = dd.delivery_code 
 		where ds.id_staff =  ".$session_data['id']."
+		and d.delivery_status > 1
 		and received_at is null ";
 		$data['pending_pengiriman'] = $this->db->query($sql)->row_array();
 
@@ -45,10 +49,14 @@ class Dashboard extends CI_Controller {
 		$session_data = $this->session->userdata();
 
 		$sql = "
-		select count(1) as total from delivery_details dd 
+		select 
+		count(1) as total
+		from delivery_details dd 
 		join delivery_staff ds on dd.delivery_code = ds.delivery_code 
+		join delivery d on d.delivery_code = dd.delivery_code 
 		where ds.id_staff =  ".$session_data['id']."
-		and received_at is null ";
+		and d.delivery_status > 1
+		and received_at is null";
 		$pending_pengiriman = $this->db->query($sql)->row_array();
 		if($pending_pengiriman['total'] == 0){
 			redirect(base_url('dashboard'));

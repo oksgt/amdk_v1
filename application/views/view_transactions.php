@@ -32,19 +32,11 @@
                         </div>
                     </div>
                     <div class="card-body table-responsive">
-                        <table id="table_trans" class="table table-striped table-bordered table-sm small">
+                        <table id="table_trans" class="table table-striped table-sm small">
                             <thead>
                                 <tr>
-                                    <th>No. Trans</th>
-                                    <th>Trans. Date</th>
-                                    <th>Customer Info</th>
-                                    <th>Delivery Date Plan</th>
-                                    <th>Delivery Date</th>
-                                    <th>Delivery Status</th>
-                                    <th>Payment Status</th>
-                                    <th>Total</th>
-                                    <th>Notes</th>
-                                    <th>#</th>
+                                    <th>Order</th>
+                                    <!-- <th>#</th> -->
                                 </tr>
                             </thead>
                             <tbody>

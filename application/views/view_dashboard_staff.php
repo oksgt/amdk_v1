@@ -24,6 +24,30 @@
                     ?>
                 </div>
 
+                <div class="card" onclick="window.open('<?= base_url('transactions/add') ?>', '_self');">
+                    <div class="card-body bg-primary">
+                        <div class="stat-widget-one">
+                            <div class="stat-icon dib"><i class="ti-shopping-cart text-white border-white"></i></div>
+                            <div class="stat-content dib">
+                                <!-- <div class="stat-text">Input Order</div> -->
+                                <div class="stat-digit text-white ">Input Transaksi</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" onclick="window.open('<?= base_url('transactions') ?>', '_self');">
+                    <div class="card-body bg-primary">
+                        <div class="stat-widget-one">
+                            <div class="stat-icon dib"><i class="ti-files text-white border-white"></i></div>
+                            <div class="stat-content dib">
+                                <!-- <div class="stat-text">Input Order</div> -->
+                                <div class="stat-digit text-white ">Daftar Transaksi</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="card" onclick="window.open('<?= base_url('dashboard/pending') ?>', '_self');">
                     <div class="card-body">
                         <div class="stat-widget-one">

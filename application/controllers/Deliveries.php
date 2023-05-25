@@ -49,7 +49,7 @@ class Deliveries extends CI_Controller {
 			$total_order_done = $total_order_done_arr['total_order_done'];
 			
 			$sql = "select count(1) as total_order_pending from delivery_details dd where delivery_code = '".$r->delivery_code."' 
-			and received_at is not null";
+			and received_at is null";
 			$total_order_pending_arr = $this->db->query($sql)->row_array();
 			$total_order_pending = $total_order_pending_arr['total_order_pending'];
 

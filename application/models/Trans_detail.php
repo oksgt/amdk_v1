@@ -44,6 +44,7 @@ class Trans_detail extends CI_Model
     private function _get_datatables_query($trans_number)
     {
         $this->db->where('trans_number', $trans_number);
+        $this->db->where('input_by', $this->session->userdata('id'));
         $this->db->from($this->view);
         $i = 0;
         foreach ($this->column_search as $item) {
