@@ -20,10 +20,9 @@
         <a style="color: white !important; text-decoration: none;" href="<?= base_url('users') ?>"> <i class="menu-icon ti-user text-white"></i>Users </a>
     </li>
 
-    <!-- <li>
-        <a href="<?= base_url('users') ?>"> <i class="menu-icon ti-user"></i>Users </a>
-    </li> -->
-
+    <li>
+        <a style="color: white !important; text-decoration: none;" href="<?= base_url('report') ?>"> <i class="menu-icon ti-file text-white"></i>Report </a>
+    </li>
     <li>
         <a style="color: white !important; text-decoration: none;" href="<?= base_url('users/changepassword') ?>"> <i class="menu-icon ti-key text-white"></i>Change Password </a>
     </li>
