@@ -11,7 +11,7 @@ class Transaction extends CI_Model
         'trans_number',
         'trans_date',
         'trans_status',
-        'jenis_pelanggan',
+        'jenis_pelanggan', 
         'name',
         'address',
         'phone',
