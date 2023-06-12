@@ -17,7 +17,7 @@ class Report extends CI_Controller {
 		$this->load->library(array('form_validation'));
 		$this->load->helper(array('url', 'language', 'app_helper','string', 'file'));
 
-		$this->load->model(array('Product'));
+		$this->load->model(array('Product', 'Transaction'));
 		if ($this->session->userdata('status') !== 'loggedin') {
 			redirect(base_url("login"));
 		}
@@ -183,7 +183,7 @@ class Report extends CI_Controller {
 		$spreadsheet->getActiveSheet()->getStyle('P5')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('ffb8cce4');
 		$spreadsheet->getActiveSheet()->getStyle('P5')->getFont()->setBold(true);
 
-		$spreadsheet->getActiveSheet()->setCellValue('Q4', 'Total Harga');
+		$spreadsheet->getActiveSheet()->setCellValue('Q4', 'Tanggal Bayar');
 		$spreadsheet->getActiveSheet()->getStyle('Q4')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 		$spreadsheet->getActiveSheet()->getStyle('Q4')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
 		$spreadsheet->getActiveSheet()->mergeCells('Q4:Q5');
@@ -191,14 +191,119 @@ class Report extends CI_Controller {
 		$spreadsheet->getActiveSheet()->getStyle('Q4:Q5')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('ffb8cce4');
 		$spreadsheet->getActiveSheet()->getStyle('Q4:Q5')->getFont()->setBold(true);
 
-		$alphabet = array();
+		$column_jp_char = array();
 
 		// Loop through the range of characters from 'a' to 'q'
-		foreach(range('a', 'q') as $char) {
-			$spreadsheet->getActiveSheet()->getColumnDimension($char)->setAutoSize(true);
+		foreach(range('c', 'e') as $char) {
+			$column_jp_char = $char;
 		}
 
-		
+		$data_transasksi = $this->Transaction->get_data()->result_array();
+		$numrow = 6;
+		$no = 1;
+		foreach ($data_transasksi as $key => $value) {
+			
+			$spreadsheet->getActiveSheet()->setCellValue('A'.$numrow, $no);
+			$spreadsheet->getActiveSheet()->setCellValue('B'. $numrow, formatTglIndo($value['trans_date']));
+
+			$sql_jp_trans  = "select jp.jenis_pelanggan, t.name  from jenis_pelanggan jp 
+				join transactions t on jp.id = t.jenis_pelanggan where 
+				t.trans_number = '".$value['trans_number']."' and t.jenis_pelanggan = 1";
+			$result_jp_trans = $this->db->query($sql_jp_trans)->row_array();
+
+			if(empty($result_jp_trans)){
+				$spreadsheet->getActiveSheet()->setCellValue('C'. $numrow, "");
+			} else {
+				$spreadsheet->getActiveSheet()->setCellValue('C'. $numrow, $result_jp_trans['name']);
+			}
+
+			$sql_jp_trans  = "select jp.jenis_pelanggan, t.name  from jenis_pelanggan jp 
+				join transactions t on jp.id = t.jenis_pelanggan where 
+				t.trans_number = '".$value['trans_number']."' and t.jenis_pelanggan = 2";
+			$result_jp_trans = $this->db->query($sql_jp_trans)->row_array();
+			if(empty($result_jp_trans)){
+				$spreadsheet->getActiveSheet()->setCellValue('D'. $numrow, "");
+			} else {
+				$spreadsheet->getActiveSheet()->setCellValue('D'. $numrow, $result_jp_trans['name']);
+			}
+ 
+			$sql_jp_trans  = "select jp.jenis_pelanggan, t.name  from jenis_pelanggan jp 
+				join transactions t on jp.id = t.jenis_pelanggan where 
+				t.trans_number = '".$value['trans_number']."' and t.jenis_pelanggan = 3";
+			$result_jp_trans = $this->db->query($sql_jp_trans)->row_array();
+			if(empty($result_jp_trans)){
+				$spreadsheet->getActiveSheet()->setCellValue('E'. $numrow, "");
+			} else {
+				$spreadsheet->getActiveSheet()->setCellValue('E'. $numrow, $result_jp_trans['name']);
+			}
+
+			// detail qty dan harga product id 1 Toyaniki Galon 19Lt
+			$detail_item = $this->db->query("select qty, price from view_trans_detail vtd where trans_number = '".$value['trans_number']."' and id_product = 1")->row_array();
+			if(empty($detail_item)){
+				$spreadsheet->getActiveSheet()->setCellValue('F'. $numrow, "");
+				$spreadsheet->getActiveSheet()->setCellValue('J'. $numrow, "");
+			} else {
+				$spreadsheet->getActiveSheet()->setCellValue('F'. $numrow, $detail_item['qty']);
+				$spreadsheet->getActiveSheet()->setCellValue('J'. $numrow, $detail_item['price']);
+			}
+
+			// detail qty dan harga product id 22 GALON KRAN
+			$detail_item = $this->db->query("select qty, price from view_trans_detail vtd where trans_number = '".$value['trans_number']."' and id_product = 22")->row_array();
+			if(empty($detail_item)){
+				$spreadsheet->getActiveSheet()->setCellValue('G'. $numrow, "");
+				$spreadsheet->getActiveSheet()->setCellValue('K'. $numrow, "");
+			} else {
+				$spreadsheet->getActiveSheet()->setCellValue('G'. $numrow, $detail_item['qty']);
+				$spreadsheet->getActiveSheet()->setCellValue('K'. $numrow, $detail_item['price']);
+			}
+
+			// detail qty dan harga product id 3 Toyaniki Botol 330ml Dus
+			$detail_item = $this->db->query("select qty, price from view_trans_detail vtd where trans_number = '".$value['trans_number']."' and id_product = 3")->row_array();
+			if(empty($detail_item)){
+				$spreadsheet->getActiveSheet()->setCellValue('H'. $numrow, "");
+				$spreadsheet->getActiveSheet()->setCellValue('L'. $numrow, "");
+			} else {
+				$spreadsheet->getActiveSheet()->setCellValue('H'. $numrow, $detail_item['qty']);
+				$spreadsheet->getActiveSheet()->setCellValue('L'. $numrow, $detail_item['price']);
+			}
+
+			// detail qty dan harga product id 2 Toyaniki CUP
+			$detail_item = $this->db->query("select qty, price from view_trans_detail vtd where trans_number = '".$value['trans_number']."' and id_product = 2")->row_array();
+			if(empty($detail_item)){
+				$spreadsheet->getActiveSheet()->setCellValue('I'. $numrow, "");
+				$spreadsheet->getActiveSheet()->setCellValue('M'. $numrow, "");
+			} else {
+				$spreadsheet->getActiveSheet()->setCellValue('I'. $numrow, $detail_item['qty']);
+				$spreadsheet->getActiveSheet()->setCellValue('M'. $numrow, $detail_item['price']);
+			}
+
+			$spreadsheet->getActiveSheet()->setCellValue('N'.$numrow, $value['total_price']);
+
+			$detail_item = $this->db->query("select total_price, payment_type_id from view_trans where trans_number = '".$value['trans_number']."' and payment_type_id = 1")->row_array();
+			if(empty($detail_item)){
+				$spreadsheet->getActiveSheet()->setCellValue('O'. $numrow, "");
+			} else {
+				$spreadsheet->getActiveSheet()->setCellValue('O'. $numrow, $detail_item['total_price']);
+			}
+
+			$detail_item = $this->db->query("select total_price, payment_type_id from view_trans where trans_number = '".$value['trans_number']."' and payment_type_id = 2")->row_array();
+			if(empty($detail_item)){
+				$spreadsheet->getActiveSheet()->setCellValue('P'. $numrow, "");
+			} else {
+				$spreadsheet->getActiveSheet()->setCellValue('P'. $numrow, $detail_item['total_price']);
+			}
+
+			$detail_item = $this->db->query("select total_price, payment_type_id, trans_date from view_trans where trans_number = '".$value['trans_number']."'")->row_array();
+			if($detail_item['payment_type_id'] == '2'){
+				$spreadsheet->getActiveSheet()->setCellValue('Q'. $numrow, "");
+			} else {
+				$spreadsheet->getActiveSheet()->setCellValue('Q'. $numrow, $detail_item['total_price']);
+			}
+
+			$no++;
+			$numrow++;
+		}
+		// die;
 		// Set the header information for the download
 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 		header('Content-Disposition: attachment;filename="example.xlsx"');
