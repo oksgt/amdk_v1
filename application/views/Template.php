@@ -187,6 +187,8 @@
         <script src="<?= base_url('assets/js/') ?>deliveries.js"></script>
     <?php } else if ($uriSegment == "dashboard") { ?>
         <script src="<?= base_url('assets/js/') ?>dashboard.js"></script>
+    <?php } else if ($uriSegment == "report") { ?>
+        <script src="<?= base_url('assets/js/') ?>report.js"></script>
     <?php } else { ?>
         <script src="<?= base_url('assets/js/') ?>app.js"></script>
     <?php } ?>
