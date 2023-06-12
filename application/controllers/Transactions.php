@@ -306,7 +306,7 @@ class Transactions extends CI_Controller
                 'qty'               => $this->input->post('input_qty'),
                 'price'               => $this->input->post('input_harga'),
                 // 'price'             => $product['price'],
-                'sub_total_price'   => $product['price'] * $this->input->post('input_qty'),
+                'sub_total_price'   => $this->input->post('input_harga') * $this->input->post('input_qty'),
                 'notes'             => '-',
                 'trans_status'      => 1,
                 'input_by'            => $this->session->userdata('id'),

@@ -30,6 +30,13 @@ class Report extends CI_Controller {
 
 	public function create_excel()
 	{
+		$post = $this->input->post();
+		$date = $post['input_date'];
+		$formatted_date = date('Y-m-d', strtotime($date));
+		$label_date = $post['input_date'];
+		// echo $formatted_date;
+		// print_r($post); 
+		// die;
 		$spreadsheet = new Spreadsheet();
 		
 		// Set the worksheet's title
@@ -41,7 +48,7 @@ class Report extends CI_Controller {
 		$spreadsheet->getActiveSheet()->mergeCells('A1:Q1');
 		$spreadsheet->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
 
-		$spreadsheet->getActiveSheet()->setCellValue('A2', 'TANGGAL 02 JANUARI 2023');
+		$spreadsheet->getActiveSheet()->setCellValue('A2', 'TANGGAL '.$label_date);
 		$spreadsheet->getActiveSheet()->getStyle('A2')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 		$spreadsheet->getActiveSheet()->mergeCells('A2:Q2');
 		$spreadsheet->getActiveSheet()->getStyle('A2')->getFont()->setBold(true);

@@ -22,20 +22,23 @@
                     </div>
                     <div class="card-body">
                         <div class="col-4">
-                            <div class="form-group">
-                                <label for="input_date">Report Date</label>
-                                <div class="datepicker date input-group">
-                                    <input type="text" placeholder="Choose Report Date" 
-                                    class="form-control" id="input_date" name="input_date" required>
-                                    <div class="input-group-append">
-                                        <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                            <form id="my-form" method="post" action="<?= base_url('/report/create_excel') ?>">
+                                <div class="form-group">
+                                    <label for="input_date">Report Date</label>
+                                    <div class="datepicker date input-group">
+                                        <input type="text" placeholder="Choose Report Date" 
+                                        class="form-control" id="input_date" name="input_date" required>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            
                         </div>
                     </div>
                     <div class="card-footer d-flex">
                         <button type="submit" class="btn btn-primary">Download</button>
+                        </form>
                     </div>
                 </div>
             </div>
