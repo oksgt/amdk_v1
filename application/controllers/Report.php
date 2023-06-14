@@ -57,7 +57,7 @@ class Report extends CI_Controller {
 		$spreadsheet->getActiveSheet()->getStyle('A4')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 		$spreadsheet->getActiveSheet()->getStyle('A4')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
 		$spreadsheet->getActiveSheet()->mergeCells('A4:A5');
-		$spreadsheet->getActiveSheet()->getStyle('A4:A5')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+		$spreadsheet->getActiveSheet()->getStyle('A4:A5')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THICK);
 		$spreadsheet->getActiveSheet()->getStyle('A4:A5')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('ffb8cce4');
 		$spreadsheet->getActiveSheet()->getStyle('A4:A5')->getFont()->setBold(true);
 
@@ -65,94 +65,94 @@ class Report extends CI_Controller {
 		$spreadsheet->getActiveSheet()->getStyle('B4')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 		$spreadsheet->getActiveSheet()->getStyle('B4')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
 		$spreadsheet->getActiveSheet()->mergeCells('B4:B5');
-		$spreadsheet->getActiveSheet()->getStyle('B4:B5')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+		$spreadsheet->getActiveSheet()->getStyle('B4:B5')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THICK);
 		$spreadsheet->getActiveSheet()->getStyle('B4:B5')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('ffb8cce4');
 		$spreadsheet->getActiveSheet()->getStyle('B4:B5')->getFont()->setBold(true);
 
 		$spreadsheet->getActiveSheet()->setCellValue('C4', 'Pembelian');
 		$spreadsheet->getActiveSheet()->getStyle('C4')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-		$spreadsheet->getActiveSheet()->getStyle('C4:E4')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+		$spreadsheet->getActiveSheet()->getStyle('C4:E4')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THICK);
 		$spreadsheet->getActiveSheet()->getStyle('C4:E4')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('ffb8cce4');
 		$spreadsheet->getActiveSheet()->getStyle('C4:E4')->getFont()->setBold(true);
 		$spreadsheet->getActiveSheet()->mergeCells('C4:E4');
 
 		$spreadsheet->getActiveSheet()->setCellValue('C5', 'Perumdam');
 		$spreadsheet->getActiveSheet()->getStyle('C5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-		$spreadsheet->getActiveSheet()->getStyle('C5')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+		$spreadsheet->getActiveSheet()->getStyle('C5')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THICK);
 		$spreadsheet->getActiveSheet()->getStyle('C5')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('ffb8cce4');
 		$spreadsheet->getActiveSheet()->getStyle('C5')->getFont()->setBold(true);
 
 		$spreadsheet->getActiveSheet()->setCellValue('D5', 'SKPD');
 		$spreadsheet->getActiveSheet()->getStyle('D5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-		$spreadsheet->getActiveSheet()->getStyle('D5')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+		$spreadsheet->getActiveSheet()->getStyle('D5')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THICK);
 		$spreadsheet->getActiveSheet()->getStyle('D5')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('ffb8cce4');
 		$spreadsheet->getActiveSheet()->getStyle('D5')->getFont()->setBold(true);
 
 		$spreadsheet->getActiveSheet()->setCellValue('E5', 'Pribadi');
 		$spreadsheet->getActiveSheet()->getStyle('E5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-		$spreadsheet->getActiveSheet()->getStyle('E5')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+		$spreadsheet->getActiveSheet()->getStyle('E5')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THICK);
 		$spreadsheet->getActiveSheet()->getStyle('E5')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('ffb8cce4');
 		$spreadsheet->getActiveSheet()->getStyle('E5')->getFont()->setBold(true);
 
 		$spreadsheet->getActiveSheet()->setCellValue('F4', 'Jumlah Satuan');
 		$spreadsheet->getActiveSheet()->getStyle('F4')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-		$spreadsheet->getActiveSheet()->getStyle('F4:I4')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+		$spreadsheet->getActiveSheet()->getStyle('F4:I4')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THICK);
 		$spreadsheet->getActiveSheet()->getStyle('F4')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('ffb8cce4');
 		$spreadsheet->getActiveSheet()->getStyle('F4:I4')->getFont()->setBold(true);
 		$spreadsheet->getActiveSheet()->mergeCells('F4:I4');
 
 		$spreadsheet->getActiveSheet()->setCellValue('F5', 'Galon 19lt');
 		$spreadsheet->getActiveSheet()->getStyle('F5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-		$spreadsheet->getActiveSheet()->getStyle('F5')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+		$spreadsheet->getActiveSheet()->getStyle('F5')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THICK);
 		$spreadsheet->getActiveSheet()->getStyle('F5')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('ffb8cce4');
 		$spreadsheet->getActiveSheet()->getStyle('F5')->getFont()->setBold(true);
 
 		$spreadsheet->getActiveSheet()->setCellValue('G5', 'Galon Kran');
 		$spreadsheet->getActiveSheet()->getStyle('G5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-		$spreadsheet->getActiveSheet()->getStyle('G5')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+		$spreadsheet->getActiveSheet()->getStyle('G5')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THICK);
 		$spreadsheet->getActiveSheet()->getStyle('G5')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('ffb8cce4');
 		$spreadsheet->getActiveSheet()->getStyle('G5')->getFont()->setBold(true);
 
 		$spreadsheet->getActiveSheet()->setCellValue('H5', 'Botol 330ml Dus');
 		$spreadsheet->getActiveSheet()->getStyle('H5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-		$spreadsheet->getActiveSheet()->getStyle('H5')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+		$spreadsheet->getActiveSheet()->getStyle('H5')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THICK);
 		$spreadsheet->getActiveSheet()->getStyle('H5')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('ffb8cce4');
 		$spreadsheet->getActiveSheet()->getStyle('H5')->getFont()->setBold(true);
 
 		$spreadsheet->getActiveSheet()->setCellValue('I5', 'Cup 220ml Dus');
 		$spreadsheet->getActiveSheet()->getStyle('I5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-		$spreadsheet->getActiveSheet()->getStyle('I5')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+		$spreadsheet->getActiveSheet()->getStyle('I5')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THICK);
 		$spreadsheet->getActiveSheet()->getStyle('I5')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('ffb8cce4');
 		$spreadsheet->getActiveSheet()->getStyle('I5')->getFont()->setBold(true);
 
 		$spreadsheet->getActiveSheet()->setCellValue('J4', 'Harga Satuan (Rp)');
 		$spreadsheet->getActiveSheet()->getStyle('J4')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-		$spreadsheet->getActiveSheet()->getStyle('J4:M4')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+		$spreadsheet->getActiveSheet()->getStyle('J4:M4')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THICK);
 		$spreadsheet->getActiveSheet()->getStyle('J4:M4')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('ffb8cce4');
 		$spreadsheet->getActiveSheet()->getStyle('J4:M4')->getFont()->setBold(true);
 		$spreadsheet->getActiveSheet()->mergeCells('J4:M4');
 
 		$spreadsheet->getActiveSheet()->setCellValue('J5', 'Galon 19lt');
 		$spreadsheet->getActiveSheet()->getStyle('J5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-		$spreadsheet->getActiveSheet()->getStyle('J5')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+		$spreadsheet->getActiveSheet()->getStyle('J5')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THICK);
 		$spreadsheet->getActiveSheet()->getStyle('J5')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('ffb8cce4');
 		$spreadsheet->getActiveSheet()->getStyle('J5')->getFont()->setBold(true);
 
 		$spreadsheet->getActiveSheet()->setCellValue('K5', 'Galon Kran');
 		$spreadsheet->getActiveSheet()->getStyle('K5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-		$spreadsheet->getActiveSheet()->getStyle('K5')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+		$spreadsheet->getActiveSheet()->getStyle('K5')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THICK);
 		$spreadsheet->getActiveSheet()->getStyle('K5')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('ffb8cce4');
 		$spreadsheet->getActiveSheet()->getStyle('K5')->getFont()->setBold(true);
 
 		$spreadsheet->getActiveSheet()->setCellValue('L5', 'Botol 330ml Dus');
 		$spreadsheet->getActiveSheet()->getStyle('L5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-		$spreadsheet->getActiveSheet()->getStyle('L5')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+		$spreadsheet->getActiveSheet()->getStyle('L5')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THICK);
 		$spreadsheet->getActiveSheet()->getStyle('L5')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('ffb8cce4');
 		$spreadsheet->getActiveSheet()->getStyle('L5')->getFont()->setBold(true);
 
 		$spreadsheet->getActiveSheet()->setCellValue('M5', 'Cup 220ml Dus');
 		$spreadsheet->getActiveSheet()->getStyle('M5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-		$spreadsheet->getActiveSheet()->getStyle('M5')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+		$spreadsheet->getActiveSheet()->getStyle('M5')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THICK);
 		$spreadsheet->getActiveSheet()->getStyle('M5')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('ffb8cce4');
 		$spreadsheet->getActiveSheet()->getStyle('M5')->getFont()->setBold(true);
 
@@ -160,26 +160,26 @@ class Report extends CI_Controller {
 		$spreadsheet->getActiveSheet()->getStyle('N4')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 		$spreadsheet->getActiveSheet()->getStyle('N4')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
 		$spreadsheet->getActiveSheet()->mergeCells('N4:N5');
-		$spreadsheet->getActiveSheet()->getStyle('N4:N5')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+		$spreadsheet->getActiveSheet()->getStyle('N4:N5')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THICK);
 		$spreadsheet->getActiveSheet()->getStyle('N4:N5')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('ffb8cce4');
 		$spreadsheet->getActiveSheet()->getStyle('N4:N5')->getFont()->setBold(true);
 
 		$spreadsheet->getActiveSheet()->setCellValue('O4', 'Keterangan');
 		$spreadsheet->getActiveSheet()->getStyle('O4')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-		$spreadsheet->getActiveSheet()->getStyle('O4:P4')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+		$spreadsheet->getActiveSheet()->getStyle('O4:P4')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THICK);
 		$spreadsheet->getActiveSheet()->getStyle('O4:P4')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('ffb8cce4');
 		$spreadsheet->getActiveSheet()->getStyle('O4:P4')->getFont()->setBold(true);
 		$spreadsheet->getActiveSheet()->mergeCells('O4:P4');
 
 		$spreadsheet->getActiveSheet()->setCellValue('O5', 'Debit');
 		$spreadsheet->getActiveSheet()->getStyle('O5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-		$spreadsheet->getActiveSheet()->getStyle('O5')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+		$spreadsheet->getActiveSheet()->getStyle('O5')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THICK);
 		$spreadsheet->getActiveSheet()->getStyle('O5')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('ffb8cce4');
 		$spreadsheet->getActiveSheet()->getStyle('O5')->getFont()->setBold(true);
 
 		$spreadsheet->getActiveSheet()->setCellValue('P5', 'Piutang');
 		$spreadsheet->getActiveSheet()->getStyle('P5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-		$spreadsheet->getActiveSheet()->getStyle('P5')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+		$spreadsheet->getActiveSheet()->getStyle('P5')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THICK);
 		$spreadsheet->getActiveSheet()->getStyle('P5')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('ffb8cce4');
 		$spreadsheet->getActiveSheet()->getStyle('P5')->getFont()->setBold(true);
 
@@ -187,23 +187,33 @@ class Report extends CI_Controller {
 		$spreadsheet->getActiveSheet()->getStyle('Q4')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 		$spreadsheet->getActiveSheet()->getStyle('Q4')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
 		$spreadsheet->getActiveSheet()->mergeCells('Q4:Q5');
-		$spreadsheet->getActiveSheet()->getStyle('Q4:Q5')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+		$spreadsheet->getActiveSheet()->getStyle('Q4:Q5')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THICK);
 		$spreadsheet->getActiveSheet()->getStyle('Q4:Q5')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('ffb8cce4');
 		$spreadsheet->getActiveSheet()->getStyle('Q4:Q5')->getFont()->setBold(true);
 
 		$column_jp_char = array();
 
 		// Loop through the range of characters from 'a' to 'q'
-		foreach(range('c', 'e') as $char) {
+		foreach(range('A', 'Q') as $char) {
 			$column_jp_char = $char;
+			$spreadsheet->getActiveSheet()->getColumnDimension($char)->setAutoSize(true);
 		}
 
 		$data_transasksi = $this->Transaction->get_data()->result_array();
 		$numrow = 6;
 		$no = 1;
+		$sums = array();
 		foreach ($data_transasksi as $key => $value) {
+			$rowData = $spreadsheet->getActiveSheet()->rangeToArray('A' . $numrow . ':' . $spreadsheet->getActiveSheet()>getHighestColumn() . $numrow, null, true, false);
+    		$sums[] = array_sum($rowData[0]);
 			
 			$spreadsheet->getActiveSheet()->setCellValue('A'.$numrow, $no);
+			
+			
+			foreach(range('A', 'Q') as $char) {
+				$spreadsheet->getActiveSheet()->getStyle($char.$numrow)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+			}
+
 			$spreadsheet->getActiveSheet()->setCellValue('B'. $numrow, formatTglIndo($value['trans_date']));
 
 			$sql_jp_trans  = "select jp.jenis_pelanggan, t.name  from jenis_pelanggan jp 
@@ -304,9 +314,21 @@ class Report extends CI_Controller {
 			$numrow++;
 		}
 		// die;
+
+		$highestRow = $spreadsheet->getActiveSheet()->getHighestRow() + 1;
+
+		$spreadsheet->getActiveSheet()->setCellValue('A'.$highestRow, 'Jumlah');
+		$spreadsheet->getActiveSheet()->getStyle('A'.$highestRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+		$spreadsheet->getActiveSheet()->getStyle('A'.$highestRow.':E'.$highestRow)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THICK);
+		$spreadsheet->getActiveSheet()->getStyle('A'.$highestRow.':E'.$highestRow)->getFont()->setBold(true);
+		$spreadsheet->getActiveSheet()->mergeCells('A'.$highestRow.':E'.$highestRow);
+
+		$date = $post['input_date'];
+		$formatted_date_filename = date('d-m-Y', strtotime($date));
+
 		// Set the header information for the download
 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-		header('Content-Disposition: attachment;filename="example.xlsx"');
+		header('Content-Disposition: attachment;filename="Laporan Harian AMDK - Periode '.$formatted_date_filename.'.xlsx"');
 		header('Cache-Control: max-age=0');
 		
 		// Create a writer object and save the spreadsheet to the output
