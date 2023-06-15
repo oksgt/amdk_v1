@@ -203,12 +203,24 @@ class Report extends CI_Controller {
 		$numrow = 6;
 		$no = 1;
 		$sums = array();
+
+		$total_qty_galon_19lt = 0;
+		$total_qty_galon_kran = 0;
+		$total_qty_botol_330 = 0;
+		$total_qty_cup_220 = 0;
+
+		$total_price_galon_19lt = 0;
+		$total_price_galon_kran = 0;
+		$total_price_botol_330 = 0;
+		$total_price_cup_220 = 0;
+
+		$total_harga = 0;
+		$total_debit = 0;
+		$total_piutang = 0;
+
 		foreach ($data_transasksi as $key => $value) {
-			$rowData = $spreadsheet->getActiveSheet()->rangeToArray('A' . $numrow . ':' . $spreadsheet->getActiveSheet()>getHighestColumn() . $numrow, null, true, false);
-    		$sums[] = array_sum($rowData[0]);
 			
 			$spreadsheet->getActiveSheet()->setCellValue('A'.$numrow, $no);
-			
 			
 			foreach(range('A', 'Q') as $char) {
 				$spreadsheet->getActiveSheet()->getStyle($char.$numrow)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
@@ -256,6 +268,8 @@ class Report extends CI_Controller {
 				$spreadsheet->getActiveSheet()->setCellValue('F'. $numrow, $detail_item['qty']);
 				$spreadsheet->getActiveSheet()->setCellValue('J'. $numrow, $detail_item['price']);
 			}
+			$total_qty_galon_19lt += (empty($detail_item)) ? 0: $detail_item['qty'];
+			$total_price_galon_19lt += (empty($detail_item)) ? 0: $detail_item['price'];
 
 			// detail qty dan harga product id 22 GALON KRAN
 			$detail_item = $this->db->query("select qty, price from view_trans_detail vtd where trans_number = '".$value['trans_number']."' and id_product = 22")->row_array();
@@ -266,6 +280,8 @@ class Report extends CI_Controller {
 				$spreadsheet->getActiveSheet()->setCellValue('G'. $numrow, $detail_item['qty']);
 				$spreadsheet->getActiveSheet()->setCellValue('K'. $numrow, $detail_item['price']);
 			}
+			$total_qty_galon_kran += (empty($detail_item)) ? 0: $detail_item['qty'];
+			$total_price_galon_kran += (empty($detail_item)) ? 0: $detail_item['price'];
 
 			// detail qty dan harga product id 3 Toyaniki Botol 330ml Dus
 			$detail_item = $this->db->query("select qty, price from view_trans_detail vtd where trans_number = '".$value['trans_number']."' and id_product = 3")->row_array();
@@ -276,6 +292,8 @@ class Report extends CI_Controller {
 				$spreadsheet->getActiveSheet()->setCellValue('H'. $numrow, $detail_item['qty']);
 				$spreadsheet->getActiveSheet()->setCellValue('L'. $numrow, $detail_item['price']);
 			}
+			$total_qty_botol_330 += (empty($detail_item)) ? 0: $detail_item['qty'];
+			$total_price_botol_330 += (empty($detail_item)) ? 0: $detail_item['price'];
 
 			// detail qty dan harga product id 2 Toyaniki CUP
 			$detail_item = $this->db->query("select qty, price from view_trans_detail vtd where trans_number = '".$value['trans_number']."' and id_product = 2")->row_array();
@@ -286,8 +304,11 @@ class Report extends CI_Controller {
 				$spreadsheet->getActiveSheet()->setCellValue('I'. $numrow, $detail_item['qty']);
 				$spreadsheet->getActiveSheet()->setCellValue('M'. $numrow, $detail_item['price']);
 			}
+			$total_qty_cup_220 += (empty($detail_item)) ? 0: $detail_item['qty'];
+			$total_price_cup_220 += (empty($detail_item)) ? 0: $detail_item['price'];
 
 			$spreadsheet->getActiveSheet()->setCellValue('N'.$numrow, $value['total_price']);
+			$total_harga += ($value['total_price'] == null) ? 0: $value['total_price'];
 
 			$detail_item = $this->db->query("select total_price, payment_type_id from view_trans where trans_number = '".$value['trans_number']."' and payment_type_id = 1")->row_array();
 			if(empty($detail_item)){
@@ -295,6 +316,7 @@ class Report extends CI_Controller {
 			} else {
 				$spreadsheet->getActiveSheet()->setCellValue('O'. $numrow, $detail_item['total_price']);
 			}
+			$total_debit += ($value['total_price'] == null) ? 0: $detail_item['total_price'];
 
 			$detail_item = $this->db->query("select total_price, payment_type_id from view_trans where trans_number = '".$value['trans_number']."' and payment_type_id = 2")->row_array();
 			if(empty($detail_item)){
@@ -302,20 +324,40 @@ class Report extends CI_Controller {
 			} else {
 				$spreadsheet->getActiveSheet()->setCellValue('P'. $numrow, $detail_item['total_price']);
 			}
+			$total_piutang += ($value['total_price'] == null) ? 0: $detail_item['total_price'];
 
 			$detail_item = $this->db->query("select total_price, payment_type_id, trans_date from view_trans where trans_number = '".$value['trans_number']."'")->row_array();
 			if($detail_item['payment_type_id'] == '2'){
 				$spreadsheet->getActiveSheet()->setCellValue('Q'. $numrow, "");
 			} else {
-				$spreadsheet->getActiveSheet()->setCellValue('Q'. $numrow, $detail_item['total_price']);
+				$spreadsheet->getActiveSheet()->setCellValue('Q'. $numrow, $detail_item['trans_date']);
 			}
+
+			// $total_qty_galon_19lt = 0;
+			// $total_qty_galon_kran = 0;
+			// $total_qty_botol_330 = 0;
+			// $total_qty_cup_220 = 0;
+
+			// $total_price_galon_19lt = 0;
+			// $total_price_galon_kran = 0;
+			// $total_price_botol_330 = 0;
+			// $total_price_cup_220 = 0;
+
+			// $total_harga = 0;
+			// $total_debit = 0;
+			// $total_piutang = 0;
+
+			$rowData = $spreadsheet->getActiveSheet()->rangeToArray('A' . $numrow . ':' . $spreadsheet->getActiveSheet()->getHighestColumn() . $numrow, null, true, false);
+    		$sums[] = array_sum($rowData[0]);
 
 			$no++;
 			$numrow++;
 		}
+
+		// print_r($sums);
 		// die;
 
-		$highestRow = $spreadsheet->getActiveSheet()->getHighestRow() + 1;
+		$highestRow = $spreadsheet->getActiveSheet()->getHighestRow()+1;
 
 		$spreadsheet->getActiveSheet()->setCellValue('A'.$highestRow, 'Jumlah');
 		$spreadsheet->getActiveSheet()->getStyle('A'.$highestRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
@@ -323,8 +365,59 @@ class Report extends CI_Controller {
 		$spreadsheet->getActiveSheet()->getStyle('A'.$highestRow.':E'.$highestRow)->getFont()->setBold(true);
 		$spreadsheet->getActiveSheet()->mergeCells('A'.$highestRow.':E'.$highestRow);
 
+
+		
+		$spreadsheet->getActiveSheet()->setCellValue('F'.$highestRow, $total_qty_galon_19lt);
+		$spreadsheet->getActiveSheet()->getStyle('F'.$highestRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+		$spreadsheet->getActiveSheet()->getStyle('F'.$highestRow)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THICK);
+
+		$spreadsheet->getActiveSheet()->setCellValue('G'.$highestRow, $total_qty_galon_kran);
+		$spreadsheet->getActiveSheet()->getStyle('G'.$highestRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+		$spreadsheet->getActiveSheet()->getStyle('G'.$highestRow)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THICK);
+
+		$spreadsheet->getActiveSheet()->setCellValue('H'.$highestRow, $total_qty_botol_330);
+		$spreadsheet->getActiveSheet()->getStyle('H'.$highestRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+		$spreadsheet->getActiveSheet()->getStyle('H'.$highestRow)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THICK);
+
+		$spreadsheet->getActiveSheet()->setCellValue('I'.$highestRow, $total_qty_cup_220);
+		$spreadsheet->getActiveSheet()->getStyle('I'.$highestRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+		$spreadsheet->getActiveSheet()->getStyle('I'.$highestRow)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THICK);
+
+		$spreadsheet->getActiveSheet()->setCellValue('J'.$highestRow, $total_price_galon_19lt);
+		$spreadsheet->getActiveSheet()->getStyle('J'.$highestRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+		$spreadsheet->getActiveSheet()->getStyle('J'.$highestRow)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THICK);
+
+		$spreadsheet->getActiveSheet()->setCellValue('K'.$highestRow, $total_price_galon_kran);
+		$spreadsheet->getActiveSheet()->getStyle('K'.$highestRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+		$spreadsheet->getActiveSheet()->getStyle('K'.$highestRow)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THICK);
+
+		$spreadsheet->getActiveSheet()->setCellValue('L'.$highestRow, $total_price_botol_330);
+		$spreadsheet->getActiveSheet()->getStyle('L'.$highestRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+		$spreadsheet->getActiveSheet()->getStyle('L'.$highestRow)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THICK);
+
+		$spreadsheet->getActiveSheet()->setCellValue('M'.$highestRow, $total_price_cup_220);
+		$spreadsheet->getActiveSheet()->getStyle('M'.$highestRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+		$spreadsheet->getActiveSheet()->getStyle('M'.$highestRow)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THICK);
+
+		$spreadsheet->getActiveSheet()->setCellValue('N'.$highestRow, $total_harga);
+		$spreadsheet->getActiveSheet()->getStyle('N'.$highestRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+		$spreadsheet->getActiveSheet()->getStyle('N'.$highestRow)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THICK);
+
+		$spreadsheet->getActiveSheet()->setCellValue('O'.$highestRow, $total_debit);
+		$spreadsheet->getActiveSheet()->getStyle('O'.$highestRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+		$spreadsheet->getActiveSheet()->getStyle('O'.$highestRow)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THICK);
+
+		$spreadsheet->getActiveSheet()->setCellValue('P'.$highestRow, $total_piutang);
+		$spreadsheet->getActiveSheet()->getStyle('P'.$highestRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+		$spreadsheet->getActiveSheet()->getStyle('P'.$highestRow)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THICK);
+
+		$spreadsheet->getActiveSheet()->setCellValue('Q'.$highestRow, "-");
+		$spreadsheet->getActiveSheet()->getStyle('Q'.$highestRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+		$spreadsheet->getActiveSheet()->getStyle('Q'.$highestRow)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THICK);
+
+
 		$date = $post['input_date'];
-		$formatted_date_filename = date('d-m-Y', strtotime($date));
+		$formatted_date_filename = str_replace("_", "-", $date); //date('d-m-Y', strtotime($date));
 
 		// Set the header information for the download
 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
