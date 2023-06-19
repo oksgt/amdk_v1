@@ -309,22 +309,28 @@ class Report extends CI_Controller {
 
 			$spreadsheet->getActiveSheet()->setCellValue('N'.$numrow, $value['total_price']);
 			$total_harga += ($value['total_price'] == null) ? 0: $value['total_price'];
+			
 
-			$detail_item = $this->db->query("select total_price, payment_type_id from view_trans where trans_number = '".$value['trans_number']."' and payment_type_id = 1")->row_array();
+			$detail_item = $this->db->query("select total_price, payment_type_id from view_trans 
+			where trans_number = '".$value['trans_number']."' and payment_type_id = 1")->row_array();
 			if(empty($detail_item)){
-				$spreadsheet->getActiveSheet()->setCellValue('O'. $numrow, "");
+				$spreadsheet->getActiveSheet()->setCellValue('O'. $numrow, "0");
+				$debit_ = 0;
 			} else {
 				$spreadsheet->getActiveSheet()->setCellValue('O'. $numrow, $detail_item['total_price']);
+				$debit_ = $detail_item['total_price'];
 			}
-			$total_debit += ($value['total_price'] == null) ? 0: $detail_item['total_price'];
+			$total_debit += ($value['total_price'] == null) ? 0: $debit_;
 
 			$detail_item = $this->db->query("select total_price, payment_type_id from view_trans where trans_number = '".$value['trans_number']."' and payment_type_id = 2")->row_array();
 			if(empty($detail_item)){
 				$spreadsheet->getActiveSheet()->setCellValue('P'. $numrow, "");
+				$credit_ = 0;
 			} else {
 				$spreadsheet->getActiveSheet()->setCellValue('P'. $numrow, $detail_item['total_price']);
+				$debit_ = $detail_item['total_price'];
 			}
-			$total_piutang += ($value['total_price'] == null) ? 0: $detail_item['total_price'];
+			$total_piutang += ($value['total_price'] == null) ? 0: $credit_;
 
 			$detail_item = $this->db->query("select total_price, payment_type_id, trans_date from view_trans where trans_number = '".$value['trans_number']."'")->row_array();
 			if($detail_item['payment_type_id'] == '2'){
@@ -332,20 +338,6 @@ class Report extends CI_Controller {
 			} else {
 				$spreadsheet->getActiveSheet()->setCellValue('Q'. $numrow, $detail_item['trans_date']);
 			}
-
-			// $total_qty_galon_19lt = 0;
-			// $total_qty_galon_kran = 0;
-			// $total_qty_botol_330 = 0;
-			// $total_qty_cup_220 = 0;
-
-			// $total_price_galon_19lt = 0;
-			// $total_price_galon_kran = 0;
-			// $total_price_botol_330 = 0;
-			// $total_price_cup_220 = 0;
-
-			// $total_harga = 0;
-			// $total_debit = 0;
-			// $total_piutang = 0;
 
 			$rowData = $spreadsheet->getActiveSheet()->rangeToArray('A' . $numrow . ':' . $spreadsheet->getActiveSheet()->getHighestColumn() . $numrow, null, true, false);
     		$sums[] = array_sum($rowData[0]);
@@ -359,14 +351,14 @@ class Report extends CI_Controller {
 
 		$highestRow = $spreadsheet->getActiveSheet()->getHighestRow()+1;
 
+		$max_highestRow = $highestRow;
+
 		$spreadsheet->getActiveSheet()->setCellValue('A'.$highestRow, 'Jumlah');
 		$spreadsheet->getActiveSheet()->getStyle('A'.$highestRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 		$spreadsheet->getActiveSheet()->getStyle('A'.$highestRow.':E'.$highestRow)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THICK);
 		$spreadsheet->getActiveSheet()->getStyle('A'.$highestRow.':E'.$highestRow)->getFont()->setBold(true);
 		$spreadsheet->getActiveSheet()->mergeCells('A'.$highestRow.':E'.$highestRow);
 
-
-		
 		$spreadsheet->getActiveSheet()->setCellValue('F'.$highestRow, $total_qty_galon_19lt);
 		$spreadsheet->getActiveSheet()->getStyle('F'.$highestRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 		$spreadsheet->getActiveSheet()->getStyle('F'.$highestRow)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THICK);
@@ -414,6 +406,108 @@ class Report extends CI_Controller {
 		$spreadsheet->getActiveSheet()->setCellValue('Q'.$highestRow, "-");
 		$spreadsheet->getActiveSheet()->getStyle('Q'.$highestRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 		$spreadsheet->getActiveSheet()->getStyle('Q'.$highestRow)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THICK);
+		
+		$date = $post['input_date'];
+		// $formatted_date_filename = str_replace("_", "-", $date); //date('d-m-Y', strtotime($date));
+		$tanggal_surat_arr = explode("/", $date);
+		$tanggal_surat = $tanggal_surat_arr['2'] . "-" . $tanggal_surat_arr['1'] . "-" . $tanggal_surat_arr['0'];
+		
+		$highestRow = $highestRow + 2;
+		$spreadsheet->getActiveSheet()->setCellValue('M'.$highestRow, 'Purwokerto, '.formatTglIndo($tanggal_surat));
+		$spreadsheet->getActiveSheet()->getStyle('M'.$highestRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+		$spreadsheet->getActiveSheet()->getStyle('M'.$highestRow.':N'.$highestRow)->getFont()->setBold(true);
+		$spreadsheet->getActiveSheet()->mergeCells('M'.$highestRow.':N'.$highestRow);
+
+
+		$highestRow = $max_highestRow  + 4;
+		$spreadsheet->getActiveSheet()->setCellValue('B'.$highestRow, 'Mengetahui :');
+		$spreadsheet->getActiveSheet()->getStyle('B'.$highestRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+		$spreadsheet->getActiveSheet()->getStyle('B'.$highestRow.':C'.$highestRow)->getFont()->setBold(true);
+		$spreadsheet->getActiveSheet()->mergeCells('B'.$highestRow.':C'.$highestRow);
+
+		$highestRow = $highestRow +1;
+		$spreadsheet->getActiveSheet()->setCellValue('B'.$highestRow, 'Manajer Unit Bisnis AMDK');
+		$spreadsheet->getActiveSheet()->getStyle('B'.$highestRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+		$spreadsheet->getActiveSheet()->getStyle('B'.$highestRow.':C'.$highestRow)->getFont()->setBold(true);
+		$spreadsheet->getActiveSheet()->mergeCells('B'.$highestRow.':C'.$highestRow);
+
+		$highestRow = $highestRow +3;
+		$spreadsheet->getActiveSheet()->setCellValue('B'.$highestRow, 'ttd');
+		$spreadsheet->getActiveSheet()->getStyle('B'.$highestRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+		$spreadsheet->getActiveSheet()->getStyle('B'.$highestRow.':C'.$highestRow)->getFont()->setBold(true);
+		$spreadsheet->getActiveSheet()->mergeCells('B'.$highestRow.':C'.$highestRow);
+
+		$highestRow = $highestRow +2;
+		$spreadsheet->getActiveSheet()->setCellValue('B'.$highestRow, 'RUDY SUTOMO, S.E.M.Si.');
+		$spreadsheet->getActiveSheet()->getStyle('B'.$highestRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+		$spreadsheet->getActiveSheet()->getStyle('B'.$highestRow.':C'.$highestRow)->getFont()->setBold(true);
+		$spreadsheet->getActiveSheet()->mergeCells('B'.$highestRow.':C'.$highestRow);
+
+		$highestRow = $highestRow +1;
+		$spreadsheet->getActiveSheet()->setCellValue('B'.$highestRow, 'NIPAM : 740300280');
+		$spreadsheet->getActiveSheet()->getStyle('B'.$highestRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+		$spreadsheet->getActiveSheet()->getStyle('B'.$highestRow.':C'.$highestRow)->getFont()->setBold(true);
+		$spreadsheet->getActiveSheet()->mergeCells('B'.$highestRow.':C'.$highestRow);
+
+
+
+		$highestRow = $max_highestRow + 4;
+		$spreadsheet->getActiveSheet()->setCellValue('H'.$highestRow, 'Diperiksa oleh :');
+		$spreadsheet->getActiveSheet()->getStyle('H'.$highestRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+		$spreadsheet->getActiveSheet()->getStyle('H'.$highestRow.':I'.$highestRow)->getFont()->setBold(true);
+		$spreadsheet->getActiveSheet()->mergeCells('H'.$highestRow.':I'.$highestRow);
+
+		$highestRow = $highestRow +1;
+		$spreadsheet->getActiveSheet()->setCellValue('H'.$highestRow, 'Supervisor Pemasaran');
+		$spreadsheet->getActiveSheet()->getStyle('H'.$highestRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+		$spreadsheet->getActiveSheet()->getStyle('H'.$highestRow.':I'.$highestRow)->getFont()->setBold(true);
+		$spreadsheet->getActiveSheet()->mergeCells('H'.$highestRow.':I'.$highestRow);
+
+		$highestRow = $highestRow +3;
+		$spreadsheet->getActiveSheet()->setCellValue('H'.$highestRow, 'ttd');
+		$spreadsheet->getActiveSheet()->getStyle('H'.$highestRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+		$spreadsheet->getActiveSheet()->getStyle('H'.$highestRow.':I'.$highestRow)->getFont()->setBold(true);
+		$spreadsheet->getActiveSheet()->mergeCells('H'.$highestRow.':I'.$highestRow);
+
+		$highestRow = $highestRow +2;
+		$spreadsheet->getActiveSheet()->setCellValue('H'.$highestRow, 'ENDANG WIDORETNO, S.E.');
+		$spreadsheet->getActiveSheet()->getStyle('H'.$highestRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+		$spreadsheet->getActiveSheet()->getStyle('H'.$highestRow.':I'.$highestRow)->getFont()->setBold(true);
+		$spreadsheet->getActiveSheet()->mergeCells('H'.$highestRow.':I'.$highestRow);
+
+		$highestRow = $highestRow +1;
+		$spreadsheet->getActiveSheet()->setCellValue('H'.$highestRow, 'NIPAM : 740500252');
+		$spreadsheet->getActiveSheet()->getStyle('H'.$highestRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+		$spreadsheet->getActiveSheet()->getStyle('H'.$highestRow.':I'.$highestRow)->getFont()->setBold(true);
+		$spreadsheet->getActiveSheet()->mergeCells('H'.$highestRow.':I'.$highestRow);
+
+
+
+
+
+		$highestRow = $max_highestRow  + 4;
+		$spreadsheet->getActiveSheet()->setCellValue('M'.$highestRow, 'Dibuat Oleh:');
+		$spreadsheet->getActiveSheet()->getStyle('M'.$highestRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+		$spreadsheet->getActiveSheet()->getStyle('M'.$highestRow.':N'.$highestRow)->getFont()->setBold(true);
+		$spreadsheet->getActiveSheet()->mergeCells('M'.$highestRow.':N'.$highestRow);
+
+		$highestRow = $highestRow +1;
+		$spreadsheet->getActiveSheet()->setCellValue('M'.$highestRow, 'Adm. Pemasaran');
+		$spreadsheet->getActiveSheet()->getStyle('M'.$highestRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+		$spreadsheet->getActiveSheet()->getStyle('M'.$highestRow.':N'.$highestRow)->getFont()->setBold(true);
+		$spreadsheet->getActiveSheet()->mergeCells('M'.$highestRow.':N'.$highestRow);
+
+		$highestRow = $highestRow +3;
+		$spreadsheet->getActiveSheet()->setCellValue('M'.$highestRow, 'ttd');
+		$spreadsheet->getActiveSheet()->getStyle('M'.$highestRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+		$spreadsheet->getActiveSheet()->getStyle('M'.$highestRow.':N'.$highestRow)->getFont()->setBold(true);
+		$spreadsheet->getActiveSheet()->mergeCells('M'.$highestRow.':N'.$highestRow);
+
+		$highestRow = $highestRow +2;
+		$spreadsheet->getActiveSheet()->setCellValue('M'.$highestRow, 'RIFANI KUSUMAWARDANI, S.E.');
+		$spreadsheet->getActiveSheet()->getStyle('M'.$highestRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+		$spreadsheet->getActiveSheet()->getStyle('M'.$highestRow.':N'.$highestRow)->getFont()->setBold(true);
+		$spreadsheet->getActiveSheet()->mergeCells('M'.$highestRow.':N'.$highestRow);
 
 
 		$date = $post['input_date'];
