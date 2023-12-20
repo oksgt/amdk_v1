@@ -580,4 +580,41 @@ class Transactions extends CI_Controller
 			return false;
 		}
 	}
+
+	public function savePelunasan(){
+
+		$price 	= $this->input->post('amount');
+		$price	= str_replace("Rp ", "", $price);
+		$price	= str_replace(",", "", $price);
+		$price	= str_replace(".00", "", $price);
+
+		$dataTransPayment = array(
+			'noTrans' 			=> $this->input->post('noTrans'),
+			'tanggal_pelunasan' => Date('Y-m-d'),
+			'nominal' 			=> $price,
+			'insert_by' 		=> $this->session->userdata('id'),
+			'insert_at' 		=> Date('Y-m-d H:i:s')
+		);
+
+		//check existing in transaction_payment table by noTrans
+		$check = $this->db->query("select noTrans FROM transaction_payment WHERE noTrans = '".$this->input->post('noTrans')."'");
+
+		if($check->num_rows() > 0){
+			echo json_encode(['result' => false, 'message' => 'Sudah ada pelunasan']);
+		} else {
+			//buatkan fungsi untuk amount apakah sama dengan total_price di tabel transactions
+			$total_price = $this->db->query("select total_price FROM transactions WHERE trans_number = '".$this->input->post('noTrans')."'");
+			if($total_price->row_array()['total_price'] !== $price){
+				echo json_encode(['result' => false, 'message' => 'Amount tidak sesuai dengan total harga / tidak diisi']);
+			} else {
+				$success = $this->insertTransPayment($dataTransPayment);
+
+				if($success){
+					echo json_encode(['result' => true, 'message' => 'Pelunasan berhasil dibuat']);
+				} else {
+					echo json_encode(['result' => false, 'message' => 'Pelunasan gagal dibuat']);
+				}	
+			}
+		}
+	}
 }

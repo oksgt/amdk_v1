@@ -59,10 +59,11 @@ class Products extends CI_Controller {
 
 	public function save(){
 		$name 	= $this->input->post('name');
-		$price 	= $this->input->post('price');
+		
 		$input_by = $this->session->userdata('id');
 		$notes  = $this->input->post('notes');
 
+		$price 	= $this->input->post('price');
 		$price	= str_replace("Rp ", "", $price);
 		$price	= str_replace(",", "", $price);
 		$price	= str_replace(".00", "", $price);

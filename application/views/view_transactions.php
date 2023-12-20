@@ -81,13 +81,43 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary" onclick="saveModal()">Save</button>
+				<button type="button" class="btn btn-primary" onclick="savePelunasan()">Save</button>
 			</div>
 		</div>
 	</div>
 </div>
 
 <script>
+	function savePelunasan() {
+		var noTrans = document.getElementById('noTrans').value;
+		var amount = document.getElementById('amount').value;
+
+		var data = {
+			noTrans: noTrans,
+			amount: amount
+		};
+
+		// Kirim data dengan menggunakan Ajax POST
+		$.ajax({
+			url: base_url + "transactions/savePelunasan/",
+			type: 'POST',
+			data: data,
+			dataType: 'json',
+			success: function(response) {
+				if (response.result) {
+					Swal.fire("Good job!", "Data saved successfully!", "success").then(() => {
+								location.reload();
+							});
+				} else {
+					Swal.fire("Oups!", response.message, "warning");
+				}
+			},
+			error: function() {
+				Swal.fire("Oups!", response.message, "warning");
+			}
+		});
+	}
+
 	function delete_transaction_confirm(id) {
 		Swal.fire({
 			title: "Apakah anda yakin?",
