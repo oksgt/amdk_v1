@@ -20,6 +20,7 @@ class Transaction extends CI_Model
         'delivery_status',
         'delivery_date',
         'payment_type_id',
+		'payment_type',
         'notes',
         'input_by_name',
         'input_by',
@@ -43,6 +44,7 @@ class Transaction extends CI_Model
         'delivery_date',
         'input_by_name',
         'payment_type_id',
+		'payment_type',
         'notes',
         'input_by',
         'deleted_at',
@@ -59,7 +61,7 @@ class Transaction extends CI_Model
 
     private function _get_datatables_query()
     {
-        $this->db->where('input_by', $this->session->userdata('id'));            
+        // $this->db->where('input_by', $this->session->userdata('id'));            
         $this->db->from($this->view);
         $i = 0;
         foreach ($this->column_search as $item) {
@@ -160,5 +162,11 @@ class Transaction extends CI_Model
     {
         $this->db->where($parameter);
         return $this->db->get($this->view);
+    }
+
+	public function insert_transaction_payment($data)
+    {
+        $this->db->insert('transaction_payment', $data);
+        return $this->db->insert_id();
     }
 }

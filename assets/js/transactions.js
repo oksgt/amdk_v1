@@ -60,6 +60,8 @@ $(document).ready(function () {
 	});
 
 	grand_total();
+
+	
 });
 
 $("input[name='input_qty']").on("input", function (e) {
@@ -201,6 +203,31 @@ function delete_confirm(id) {
 	});
 }
 
+function delete_transaction_confirm(id) {
+	Swal.fire({
+		title: "Apakah anda yakin?",
+		text: "Data transaksi akan dihapus!",
+		icon: "warning",
+		showCancelButton: true,
+		confirmButtonText: "Yes",
+	}).then((result) => {
+		if (result.value) {
+			$.ajax({
+				url: base_url + "transactions/delete_item/" + id,
+				type: "POST",
+				dataType: "json",
+				success: function (data) {
+					if (data.result) {
+						Swal.fire("Good job!", "Data deleted successfully!", "success");
+					} else {
+						Swal.fire("Oups!", data.message, "warning");
+					}
+				},
+			});
+		}
+	});
+}
+
 function show_edit(id){
 	// console.log('oke');
 	Swal.fire({
@@ -282,3 +309,9 @@ function check_stock(){
 		}
 	});
 }
+
+
+
+
+
+

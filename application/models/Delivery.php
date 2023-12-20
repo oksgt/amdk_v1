@@ -41,7 +41,7 @@ class Delivery extends CI_Model
     {
 
         // $where = array('deleted_at = "" ');
-        $this->db->where('deleted_at = "" or deleted_at is null');
+        $this->db->where('deleted_at is null');
         $this->db->from($this->view);
         $i = 0;
         foreach ($this->column_search as $item) {
@@ -86,7 +86,7 @@ class Delivery extends CI_Model
     public function count_all()
     {
         // $where = array('deleted_at = "" ');
-        $this->db->where('deleted_at = "" or deleted_at is null');
+        $this->db->where(' deleted_at is null');
         $this->db->from($this->view);
         return $this->db->count_all_results();
     }

@@ -23,6 +23,7 @@ class Transactions extends CI_Controller
 
     public function trans_list()
     {
+
         $list = $this->Transaction->get_datatables();
         $data = array();
         $no = $_POST['start'];
@@ -42,8 +43,20 @@ class Transactions extends CI_Controller
 				$status = "Finish";
 			}
 
-            $payment_badge = ($r->payment_type_id == 2) ? '<span class="badge badge-warning">Piutang</span></h4>' : '<span class="badge badge-success">Lunas</span></h4>';
+			$payment_date = '-';
+			$tanggal_pelunasan = $this->db->query("select date(tanggal_pelunasan) as tanggal_pelunasan 
+			from transaction_payment where noTrans = '".$r->trans_number."'")->row();
+			if(!empty($tanggal_pelunasan)){
+				$payment_date = $tanggal_pelunasan->tanggal_pelunasan;
+				$payment_date = formatTglIndo($payment_date);
+			}
+
+            $payment_badge = ($r->payment_type_id == 2) ? '<span class="badge badge-warning">Piutang</span>' : '<span class="badge badge-success">Lunas</span>';
             
+			$button_pelunasan = ($r->payment_type_id == 2) ? '<a role="button" class="btn btn-warning"
+				data-toggle="modal" data-target="#modalPelunasan" data-trans-number="'.$r->trans_number.'">
+				<b class="ti-check"></b> Pelunasan
+			</a>' : '';
             $row[] = '
                 <div class=" justify-content-center mb-3">
                     <div class="col-md-12 col-xl-12 p-0">
@@ -74,16 +87,23 @@ class Transactions extends CI_Controller
                             </p>
                             </div>
                             <div class="col-md-4 col-lg-4 col-xl-4 border-sm-start-none border-start">
-                            <div class="d-flex flex-row align-items-center mb-1">
-                                <h4 class="mb-1 me-1">Total Harga : Rp. '.rupiah($r->total_price).' 
-                                '.$payment_badge.'
-                            </div>
-                            <h6 class="text-success">Rencana Pengiriman : '.formatTglIndo($r->delivery_date_plan).'</h6>
-                            <div class="d-flex flex-column mt-4">
-                                <a role="button" class="btn btn-info btn-sm w-100 text-white" href="' . base_url('transactions/view/' . $r->trans_number) . '">
-                                    <b class="ti-eye"></b> View
-                                </a>
-                            </div>
+								<div class="d-flex flex-row align-items-center mb-1">
+									<h4 class="mb-1 me-1">Total Harga : Rp. '.rupiah($r->total_price).'</h4>
+								</div>
+								<div class="d-flex flex-row align-items-center mb-1">
+									<h4 style="font-size: 14px">'.$payment_badge.'&nbsp;&nbsp; <b class="ti-calendar" style="font-size: 14px"></b>&nbsp;'.$payment_date.'</h4>
+								</div>
+								<h6 class="text-success">Rencana Pengiriman : '.formatTglIndo($r->delivery_date_plan).'</h6>
+									<div class="btn-group btn-group-sm mt-2" role="group">
+										'.$button_pelunasan.'
+										<a role="button" class="btn btn-info text-white"
+										href="' . base_url('transactions/view/' . $r->trans_number) . '">
+											<b class="ti-eye"></b> View
+										</a>
+										<button type="button" class="btn btn-outline-danger" onclick="delete_transaction_confirm('.$r->id.');">
+											<b class="ti-trash"></b> Delete
+										</button>
+									</div>
                             </div>
                         </div>
                         </div>
@@ -131,12 +151,12 @@ class Transactions extends CI_Controller
             $row[] = rupiah($r->price);
             $row[] = rupiah($r->sub_total_price);
             $row[] = '
-				<div class="btn-group-sm d-flex" role="group" aria-label="Action Button">
-					<button role="button" class="btn btn-warning btn-sm w-100 text-white" onclick="show_edit(' . $r->id . ')">
-						<b class="ti-pencil-alt"></b> 
+				<div class="btn-group btn-group-sm d-flex" role="group" aria-label="Action Button">
+					<button type="button" class="btn btn-warning w-100" onclick="show_edit(' . $r->id . ')">
+						<span class="ti-pencil-alt"></span> Update Qty
 					</button>
-                    <button role="button" class="btn btn-danger btn-sm w-100" onclick="delete_confirm(' . $r->id . ')">
-						<b class="ti-trash"></b> 
+					<button type="button" class="btn btn-outline-danger w-100" onclick="delete_confirm(' . $r->id . ')">
+						<span class="ti-trash"></span> Delete
 					</button>
 				</div>
 			';
@@ -164,13 +184,23 @@ class Transactions extends CI_Controller
     public function add()
     {
         // deleted unused trans number
-        $sql = "delete from transaction_number where transaction_number in (
-            select tn.transaction_number
-            from transaction_number tn
-            left join transactions t 
-            on tn.transaction_number = t.trans_number
-            where t.trans_number is null
-        )";
+        //$sql = "delete from transaction_number where transaction_number in (
+        //    select tn.transaction_number
+        //    from transaction_number tn
+        //    left join transactions t 
+        //    on tn.transaction_number = t.trans_number
+        //    where t.trans_number is null
+        //)";
+		$sql = "
+			DELETE FROM transaction_number WHERE transaction_number IN (
+				SELECT * FROM (
+				SELECT tn.transaction_number
+				FROM transaction_number tn
+				LEFT JOIN transactions t ON tn.transaction_number = t.trans_number
+				WHERE t.trans_number IS NULL
+				) AS subquery
+			);
+		";
         $del_unused_trans_number = $this->db->query($sql);
 
         $sql = "select max(number) as max from transaction_number where input_date = current_date()";
@@ -436,6 +466,17 @@ class Transactions extends CI_Controller
 
         $update_trans_status = $this->Trans_detail->update($obj, ['trans_number', $trans_number]);
 
+		if($payment_status == 1){
+			$dataTransPayment = array(
+				'noTrans' => $trans_number,
+				'tanggal_pelunasan' => Date('Y-m-d'),
+				'nominal' => $this->input->post('total_price'),
+				'insert_by' => $this->session->userdata('id'),
+				'insert_at' => Date('Y-m-d H:i:s')
+			);
+			$this->insertTransPayment($dataTransPayment);
+		}
+
         if ($this->db->trans_status() === FALSE) {
             $this->db->trans_rollback();
             $message = '
@@ -463,5 +504,80 @@ class Transactions extends CI_Controller
         redirect(base_url('transactions'));
     }
 
+	function delete($trans_number = ""){
+		if($trans_number == ""){
+			redirect(base_url('transactions'));
+		}
+	
+		// Check existing transaction
+		$query = $this->db->query("SELECT trans_number FROM transactions WHERE trans_number = '".$trans_number."'");
+		$data = $query->row_array();
+		if(empty($data)){
+			$message = '
+				<div class="alert alert-error alert-dismissible fade show" role="alert">
+					<strong>Failed!</strong> Transaction number not found!
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			';
+			$this->session->set_flashdata('item', $message);
+			redirect(base_url('transactions'));
+		}
+	
+		// Soft delete the transaction
+		$update_data = array(
+			'deleted_at' => date('Y-m-d H:i:s')
+		);
+		$this->db->where('trans_number', $trans_number);
+		$success = $this->db->update('transactions', $update_data);
+	
+		if($success){
+			$message = '
+				<div class="alert alert-success alert-dismissible fade show" role="alert">
+					<strong>Success!</strong> Delete transactions success.
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			';
+		} else {
+			$message = '
+				<div class="alert alert-danger alert-dismissible fade show" role="alert">
+					<strong>Failed!</strong> Delete transactions failed.
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			';
+		}
+		
+		$this->session->set_flashdata('item', $message);
+		redirect(base_url('transactions'));
+	}
 
+	public function delete_trans($id){
+		$update_data = array(
+			'deleted_at' => date('Y-m-d H:i:s')
+		);
+
+		$success = $this->Transaction->update($update_data, [
+			'id' => $id
+		]);
+		
+        if($success){
+            echo json_encode(['result' => true]);
+        } else {
+            echo json_encode(['result' => false]);
+        }
+    }
+
+	private function insertTransPayment($data){
+		$insert_id = $this->Transaction->insert_transaction_payment($data);
+		if ($insert_id) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
