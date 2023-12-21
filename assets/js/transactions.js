@@ -50,7 +50,7 @@ $(document).ready(function () {
 		responsive: true,
 		lengthChange: false,
 		autoWidth: false,
-		bPaginate: false,
+		bPaginate: true,
 		bInfo: false,
 		// "order": [],
 		ajax: {
