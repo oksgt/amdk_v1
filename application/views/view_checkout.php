@@ -51,17 +51,17 @@
                                     <div class="form-group">
                                         <label for="input_name">Name</label>
                                         <input type="text" class="form-control"  name="input_name" id="input_name"
-                                        data-type="currency" placeholder="Type Customer Name" required>
+                                         placeholder="Type Customer Name" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="input_address">Delivery Address</label>
                                         <input type="text" class="form-control"  name="input_address" id="input_address"
-                                        data-type="currency" placeholder="Type Customer Delivery Address" required>
+                                         placeholder="Type Customer Delivery Address" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="input_phone">Phone</label>
                                         <input type="text" class="form-control"  name="input_phone" id="input_phone"
-                                        data-type="currency" placeholder="Type Customer Phone" required>
+                                         placeholder="Type Customer Phone" required>
                                     </div>
                                 </div>
                                 <div class="col-lg">

@@ -137,7 +137,7 @@ class Deliveries extends CI_Controller {
 			select t.* from transactions t 
 			left join delivery_details dd 
 			on t.trans_number = dd.trans_number  
-			where dd.trans_number is null 
+			where dd.trans_number is null and t.deleted_at is null 
 			order by t.delivery_date_plan asc 
 		")->result();
 
@@ -245,9 +245,25 @@ class Deliveries extends CI_Controller {
 		}
 
 		$staff = $this->db->query("
-			select u.id, u.name from users u 
-			left join delivery_staff ds on u.id = ds.id_staff 
-			where u.role_id = 2 and u.status = 1 and ds.id_staff is null
+			select id, name from (
+				SELECT
+				dd.delivery_code,
+				COUNT(dd.trans_number) AS total_trans_number,
+				COUNT(CASE WHEN dd.received_at IS NOT NULL THEN dd.trans_number END) AS received_done,
+				ds.id_staff,
+				u.name,
+				u.id
+				FROM
+				delivery_details dd
+				JOIN
+				delivery_staff ds ON ds.delivery_code = dd.delivery_code
+				right join 
+					users u on u.id = ds.id_staff
+				where u.role_id = 2 and u.status = 1 
+				GROUP BY
+				dd.delivery_code, ds.id_staff, u.name, u.id
+				) as a
+			where total_trans_number = received_done or id_staff is null
 		")->result();
 		$data['staff'] = $staff;
 		// $this->staff_delivery($data);
